@@ -11,10 +11,10 @@ on:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
-      - name: Check DNS, HTTP status, redirects and page title
+      - name: Check DNS and HTTP responses
         shell: bash
         run: |
           set +e
@@ -34,13 +34,12 @@ jobs:
 
             rm -f /tmp/headers /tmp/body
             curl -L --connect-timeout 15 --max-time 45 \
-              -A "Mozilla/5.0 DeploymentAudit/1.0" \
+              -A "Mozilla/5.0 DeploymentAudit/2.0" \
               -D /tmp/headers -o /tmp/body -sS "$url"
             curl_exit=$?
             echo "CURL_EXIT=$curl_exit"
 
             if [ -f /tmp/headers ]; then
-              echo "--- RESPONSE HEADERS ---"
               grep -E '^(HTTP/|location:|content-type:|server:)' /tmp/headers | tail -20
             fi
 
@@ -48,6 +47,112 @@ jobs:
               echo "BODY_BYTES=$(wc -c < /tmp/body)"
               title=$(grep -ioE '<title[^>]*>[^<]*</title>' /tmp/body | head -1)
               echo "TITLE=${title:-NONE}"
-              echo "BODY_PREFIX=$(tr '\n' ' ' < /tmp/body | head -c 240)"
             fi
           done
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Chromium browser
+        run: |
+          npm install --no-save playwright@1.52.0
+          npx playwright install --with-deps chromium
+
+      - name: Verify the actual rendered user interfaces
+        run: |
+          cat > render-audit.cjs <<'EOF'
+          const { chromium } = require('playwright');
+
+          const checks = [
+            {
+              name: 'Portfolio',
+              url: 'https://ragil-riztianda.vercel.app/',
+              requiredText: ['ALL 54 REPOSITORIES', 'PROJECT EVIDENCE'],
+            },
+            {
+              name: 'Pakel',
+              url: 'https://pakel-web.vercel.app/',
+              requiredText: ['Pakel'],
+            },
+            {
+              name: 'Presensi demo',
+              url: 'https://ragil-riztianda.vercel.app/demos/presensi-mobile-v2/',
+              requireFlutterView: true,
+            },
+          ];
+
+          (async () => {
+            const browser = await chromium.launch({
+              headless: true,
+              args: ['--enable-unsafe-swiftshader'],
+            });
+
+            let failed = false;
+
+            for (const check of checks) {
+              const context = await browser.newContext({
+                viewport: { width: 1440, height: 1000 },
+                locale: 'id-ID',
+                serviceWorkers: 'block',
+              });
+              const page = await context.newPage();
+              const pageErrors = [];
+              page.on('pageerror', (error) => pageErrors.push(error.message));
+              page.on('console', (message) => {
+                if (message.type() === 'error') pageErrors.push(message.text());
+              });
+
+              console.log(`============================================================`);
+              console.log(`BROWSER_CHECK=${check.name}`);
+              try {
+                const response = await page.goto(`${check.url}?audit=${Date.now()}`, {
+                  waitUntil: 'domcontentloaded',
+                  timeout: 120000,
+                });
+                await page.waitForTimeout(check.requireFlutterView ? 20000 : 8000);
+
+                const status = response?.status() ?? 0;
+                const title = await page.title();
+                const bodyText = await page.locator('body').innerText().catch(() => '');
+                const flutterViews = await page.locator('flutter-view, flt-glass-pane, canvas').count();
+
+                console.log(`HTTP_STATUS=${status}`);
+                console.log(`TITLE=${title}`);
+                console.log(`BODY_TEXT_BYTES=${Buffer.byteLength(bodyText)}`);
+                console.log(`FLUTTER_RENDER_NODES=${flutterViews}`);
+                console.log(`PAGE_ERRORS=${JSON.stringify(pageErrors)}`);
+
+                if (status >= 400) {
+                  failed = true;
+                  console.log(`RESULT=FAIL_HTTP`);
+                } else if (check.requireFlutterView && flutterViews === 0) {
+                  failed = true;
+                  console.log(`RESULT=FAIL_NOT_RENDERED`);
+                } else if (
+                  check.requiredText &&
+                  !check.requiredText.every((text) => bodyText.includes(text))
+                ) {
+                  failed = true;
+                  console.log(`RESULT=FAIL_REQUIRED_TEXT`);
+                } else if (pageErrors.length > 0) {
+                  failed = true;
+                  console.log(`RESULT=FAIL_RUNTIME_ERRORS`);
+                } else {
+                  console.log(`RESULT=PASS_RENDERED`);
+                }
+              } catch (error) {
+                failed = true;
+                console.log(`RESULT=FAIL_EXCEPTION`);
+                console.log(error.stack || error.message);
+              }
+
+              await context.close();
+            }
+
+            await browser.close();
+            process.exit(failed ? 1 : 0);
+          })();
+          EOF
+          node render-audit.cjs
