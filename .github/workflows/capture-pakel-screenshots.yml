@@ -1,0 +1,88 @@
+name: Capture real Pakel screenshots
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/capture-pakel-screenshots.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout portfolio repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.52.0
+          npx playwright install --with-deps chromium
+
+      - name: Capture screenshots from the real deployment
+        run: |
+          mkdir -p public/project-screenshots/pakel
+          cat > /tmp/capture-pakel.cjs <<'EOF'
+          const { chromium } = require('playwright');
+
+          const target = 'https://pakel-web.vercel.app';
+
+          async function settle(page) {
+            await page.waitForLoadState('domcontentloaded');
+            await page.waitForTimeout(7000);
+          }
+
+          (async () => {
+            const browser = await chromium.launch({ headless: true });
+
+            const desktop = await browser.newPage({
+              viewport: { width: 1440, height: 1024 },
+              deviceScaleFactor: 1,
+            });
+            await desktop.goto(target, { waitUntil: 'domcontentloaded', timeout: 120000 });
+            await settle(desktop);
+            await desktop.screenshot({
+              path: 'public/project-screenshots/pakel/home-desktop.png',
+              fullPage: true,
+            });
+
+            const mobile = await browser.newPage({
+              viewport: { width: 390, height: 844 },
+              deviceScaleFactor: 1,
+              isMobile: true,
+              hasTouch: true,
+            });
+            await mobile.goto(target, { waitUntil: 'domcontentloaded', timeout: 120000 });
+            await settle(mobile);
+            await mobile.screenshot({
+              path: 'public/project-screenshots/pakel/home-mobile.png',
+              fullPage: true,
+            });
+
+            await browser.close();
+          })().catch((error) => {
+            console.error(error);
+            process.exit(1);
+          });
+          EOF
+          node /tmp/capture-pakel.cjs
+
+      - name: Commit captured screenshots
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/project-screenshots/pakel
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: capture real Pakel deployment screenshots [skip ci]"
+          git push
