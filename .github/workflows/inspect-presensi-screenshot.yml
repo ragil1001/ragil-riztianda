@@ -1,0 +1,25 @@
+name: Inspect Presensi screenshot render
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/inspect-presensi-screenshot.yml
+  workflow_dispatch:
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Print PNG for render inspection
+        run: |
+          echo "DESKTOP_PNG_BEGIN"
+          base64 -w0 public/project-screenshots/presensi-mobile/demo-desktop.png
+          echo
+          echo "DESKTOP_PNG_END"
+          echo "MOBILE_PNG_BEGIN"
+          base64 -w0 public/project-screenshots/presensi-mobile/demo-mobile.png
+          echo
+          echo "MOBILE_PNG_END"
