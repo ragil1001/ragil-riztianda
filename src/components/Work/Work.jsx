@@ -1,125 +1,141 @@
 import React, { useState } from "react";
-import { projects } from "../../constants";
+import { portfolioProjects } from "../../data/portfolioProjects";
 
 const Work = () => {
   const [selectedProject, setSelectedProject] = useState(null);
 
-  const handleOpenModal = (project) => {
-    setSelectedProject(project);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedProject(null);
-  };
-
   return (
     <section
       id="work"
-      className="py-24 pb-24 px-[12vw] md:px-[7vw] lg:px-[20vw] font-sans relative"
+      className="py-24 px-[7vw] lg:px-[14vw] font-sans relative"
     >
-      {/* Section Title */}
-      <div className="text-center mb-16">
-        <h2 className="text-4xl font-bold text-white">PROJECTS</h2>
-        <div className="w-32 h-1 bg-purple-500 mx-auto mt-4"></div>
-        <p className="text-gray-400 mt-4 text-lg font-semibold">
-          A showcase of the projects I have worked on, highlighting my skills
-          and experience in various technologies
+      <div className="text-center mb-14">
+        <p className="text-sm font-semibold tracking-[0.2em] text-purple-400 uppercase">
+          Verified deployments
+        </p>
+        <h2 className="text-4xl font-bold text-white mt-3">SELECTED PROJECTS</h2>
+        <p className="text-gray-400 mt-4 text-base max-w-2xl mx-auto leading-relaxed">
+          Every visual below is captured from a real running project. Projects are added one by one only after their deployment and screenshots are verified.
         </p>
       </div>
 
-      {/* Projects Grid */}
-      <div className="grid gap-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
-        {projects.map((project) => (
-          <div
+      <div className="grid gap-10 grid-cols-1">
+        {portfolioProjects.map((project) => (
+          <article
             key={project.id}
-            onClick={() => handleOpenModal(project)}
-            className="border border-white bg-gray-900 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden cursor-pointer hover:shadow-purple-500/50 hover:-translate-y-2 transition-transform duration-300"
+            className="overflow-hidden rounded-2xl border border-white/15 bg-[#0d0c1a] shadow-2xl"
           >
-            <div className="p-4">
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full h-48 object-cover rounded-xl"
-              />
-            </div>
-            <div className="p-6">
-              <h3 className="text-2xl font-bold text-white mb-2">
+            <button
+              type="button"
+              onClick={() => setSelectedProject(project)}
+              className="block w-full text-left"
+              aria-label={`Open ${project.title} screenshots`}
+            >
+              <div className="relative bg-white">
+                <img
+                  src={project.image}
+                  alt={`${project.title} production website screenshot`}
+                  className="w-full max-h-[620px] object-cover object-top"
+                  loading="lazy"
+                />
+                <span className="absolute top-4 left-4 rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-white shadow-lg">
+                  {project.status}
+                </span>
+              </div>
+            </button>
+
+            <div className="p-6 md:p-8">
+              <h3 className="text-2xl md:text-3xl font-bold text-white">
                 {project.title}
               </h3>
-              <p className="text-gray-500 mb-4 pt-4 line-clamp-3">
+              <p className="text-gray-400 mt-4 leading-relaxed max-w-4xl">
                 {project.description}
               </p>
-              <div className="mb-4">
-                {project.tags.map((tag, index) => (
+
+              <div className="flex flex-wrap gap-2 mt-5">
+                {project.tags.map((tag) => (
                   <span
-                    key={index}
-                    className="inline-block bg-[#251f38] text-xs font-semibold text-purple-500 rounded-full px-2 py-1 mr-2 mb-2"
+                    key={tag}
+                    className="rounded-full bg-[#251f38] px-3 py-1 text-xs font-semibold text-purple-300"
                   >
                     {tag}
                   </span>
                 ))}
               </div>
+
+              <div className="flex flex-col sm:flex-row gap-3 mt-7">
+                <a
+                  href={project.webapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-xl bg-purple-600 px-5 py-3 text-center font-semibold text-white transition hover:bg-purple-700"
+                >
+                  Open Live Site
+                </a>
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-xl border border-white/20 px-5 py-3 text-center font-semibold text-white transition hover:bg-white/10"
+                >
+                  View Source Code
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setSelectedProject(project)}
+                  className="rounded-xl border border-white/20 px-5 py-3 font-semibold text-white transition hover:bg-white/10"
+                >
+                  View Desktop & Mobile
+                </button>
+              </div>
             </div>
-          </div>
+          </article>
         ))}
       </div>
 
-      {/* Modal Container */}
       {selectedProject && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 p-4">
-          <div className="bg-gray-900 rounded-xl shadow-2xl lg:w-full w-[90%] max-w-3xl overflow-hidden relative">
-            <div className="flex justify-end p-4">
+        <div
+          className="fixed inset-0 z-50 overflow-y-auto bg-black/90 p-4 md:p-8"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${selectedProject.title} screenshots`}
+        >
+          <div className="mx-auto max-w-6xl rounded-2xl bg-[#0d0c1a] p-4 md:p-7 shadow-2xl">
+            <div className="flex items-center justify-between gap-4 mb-5">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-400">
+                  Captured from production
+                </p>
+                <h3 className="text-xl md:text-3xl font-bold text-white mt-1">
+                  {selectedProject.title}
+                </h3>
+              </div>
               <button
-                onClick={handleCloseModal}
-                className="text-white text-3xl font-bold hover:text-purple-500"
+                type="button"
+                onClick={() => setSelectedProject(null)}
+                className="h-11 w-11 shrink-0 rounded-full border border-white/20 text-2xl text-white hover:bg-white/10"
+                aria-label="Close screenshots"
               >
-                &times;
+                ×
               </button>
             </div>
 
-            <div className="flex flex-col">
-              <div className="w-full flex justify-center bg-gray-900 px-4">
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_390px] items-start">
+              <div>
+                <p className="text-sm font-semibold text-gray-300 mb-2">Desktop deployment</p>
                 <img
                   src={selectedProject.image}
-                  alt={selectedProject.title}
-                  className="lg:w-full w-[95%] object-contain rounded-xl shadow-2xl"
+                  alt={`${selectedProject.title} desktop production screenshot`}
+                  className="w-full rounded-xl border border-white/10 bg-white object-top"
                 />
               </div>
-              <div className="lg:p-8 p-6">
-                <h3 className="lg:text-3xl font-bold text-white mb-4 text-md">
-                  {selectedProject.title}
-                </h3>
-                <p className="text-gray-400 mb-6 lg:text-base text-xs">
-                  {selectedProject.description}
-                </p>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {selectedProject.tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="bg-[#251f38] text-xs font-semibold text-purple-500 rounded-full px-2 py-1"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                {/* <div className="flex gap-4">
-                  <a
-                    href={selectedProject.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-1/2 bg-gray-800 hover:bg-purple-800 text-gray-400 lg:px-6 lg:py-2 px-2 py-1 rounded-xl lg:text-xl text-sm font-semibold text-center"
-                  >
-                    View Code
-                  </a>
-                  <a
-                    href={selectedProject.webapp}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-1/2 bg-purple-600 hover:bg-purple-800 text-white lg:px-6 lg:py-2 px-2 py-1 rounded-xl lg:text-xl text-sm font-semibold text-center"
-                  >
-                    View Live
-                  </a>
-                </div> */}
+              <div>
+                <p className="text-sm font-semibold text-gray-300 mb-2">Mobile deployment</p>
+                <img
+                  src={selectedProject.mobileImage}
+                  alt={`${selectedProject.title} mobile production screenshot`}
+                  className="w-full rounded-xl border border-white/10 bg-white object-top"
+                />
               </div>
             </div>
           </div>
