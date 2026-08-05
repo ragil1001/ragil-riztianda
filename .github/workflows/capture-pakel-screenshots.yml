@@ -33,7 +33,7 @@ jobs:
       - name: Capture screenshots from the real deployment
         run: |
           mkdir -p public/project-screenshots/pakel
-          cat > /tmp/capture-pakel.cjs <<'EOF'
+          cat > capture-pakel.cjs <<'EOF'
           const { chromium } = require('playwright');
 
           const target = 'https://pakel-web.vercel.app';
@@ -76,7 +76,8 @@ jobs:
             process.exit(1);
           });
           EOF
-          node /tmp/capture-pakel.cjs
+          node capture-pakel.cjs
+          rm capture-pakel.cjs
 
       - name: Commit captured screenshots
         run: |
