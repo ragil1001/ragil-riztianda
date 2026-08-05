@@ -1,0 +1,67 @@
+name: Build and deploy real Presensi Mobile web demo
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/deploy-presensi-mobile-demo.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-demo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout portfolio repository
+        uses: actions/checkout@v4
+        with:
+          path: portfolio
+
+      - name: Checkout Presensi Mobile source
+        uses: actions/checkout@v4
+        with:
+          repository: ragil1001/presensi_mobile
+          ref: main
+          path: presensi-mobile
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Enable Flutter web
+        working-directory: presensi-mobile
+        run: flutter config --enable-web
+
+      - name: Install dependencies
+        working-directory: presensi-mobile
+        run: flutter pub get
+
+      - name: Build the actual Flutter project for web
+        working-directory: presensi-mobile
+        run: |
+          flutter build web \
+            --release \
+            --base-href /demos/presensi-mobile/
+
+      - name: Copy real build into portfolio deployment
+        run: |
+          rm -rf portfolio/public/demos/presensi-mobile
+          mkdir -p portfolio/public/demos/presensi-mobile
+          cp -R presensi-mobile/build/web/. portfolio/public/demos/presensi-mobile/
+
+      - name: Commit deployable Flutter web build
+        working-directory: portfolio
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/demos/presensi-mobile
+          git diff --cached --quiet && exit 0
+          git commit -m "deploy: publish real Presensi Mobile Flutter web build [skip ci]"
+          git push
