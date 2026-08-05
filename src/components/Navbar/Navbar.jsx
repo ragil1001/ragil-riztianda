@@ -7,7 +7,6 @@ const Navbar = () => {
   const [activeSection, setActiveSection] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Detect scroll and change navbar background
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -17,7 +16,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Smooth scroll function
   const handleMenuItemClick = (sectionId) => {
     setActiveSection(sectionId);
     setIsOpen(false);
@@ -33,50 +31,54 @@ const Navbar = () => {
     { id: "skills", label: "Skills" },
     { id: "experience", label: "Experience" },
     { id: "work", label: "Projects" },
+    { id: "repositories", label: "All Repositories" },
     { id: "education", label: "Education" },
   ];
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition duration-300 px-[7vw] md:px-[7vw] lg:px-[20vw] ${
+      className={`fixed top-0 z-50 w-full px-[7vw] transition duration-300 md:px-[7vw] lg:px-[14vw] ${
         isScrolled
-          ? "bg-[#050414] bg-opacity-50 backdrop-blur-md shadow-md"
+          ? "bg-[#050414]/90 shadow-md backdrop-blur-md"
           : "bg-transparent"
       }`}
     >
-      <div className="text-white py-5 flex justify-between items-center">
-        {/* Logo */}
-        <div className="text-lg font-semibold cursor-pointer">
+      <div className="flex items-center justify-between py-5 text-white">
+        <button
+          type="button"
+          onClick={() => handleMenuItemClick("about")}
+          className="cursor-pointer text-lg font-semibold"
+        >
           <span className="text-[#8245ec]">&lt;</span>
           <span className="text-white">Ragil</span>
           <span className="text-[#8245ec]">/</span>
           <span className="text-white">Riztianda</span>
           <span className="text-[#8245ec]">&gt;</span>
-        </div>
+        </button>
 
-        {/* Desktop Menu */}
-        <ul className="hidden md:flex space-x-8 text-gray-300">
+        <ul className="hidden items-center gap-5 text-sm text-gray-300 lg:flex">
           {menuItems.map((item) => (
-            <li
-              key={item.id}
-              className={`cursor-pointer hover:text-[#8245ec] ${
-                activeSection === item.id ? "text-[#8245ec]" : ""
-              }`}
-            >
-              <button onClick={() => handleMenuItemClick(item.id)}>
+            <li key={item.id}>
+              <button
+                type="button"
+                onClick={() => handleMenuItemClick(item.id)}
+                className={`transition hover:text-[#8245ec] ${
+                  activeSection === item.id ? "text-[#8245ec]" : ""
+                }`}
+              >
                 {item.label}
               </button>
             </li>
           ))}
         </ul>
 
-        {/* Social Icons */}
-        <div className="hidden md:flex space-x-4">
+        <div className="hidden space-x-4 md:flex">
           <a
             href="https://github.com/ragil1001"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-300 hover:text-[#8245ec]"
+            className="text-gray-300 transition hover:text-[#8245ec]"
+            aria-label="GitHub profile"
           >
             <FaGithub size={24} />
           </a>
@@ -84,40 +86,46 @@ const Navbar = () => {
             href="https://www.linkedin.com/in/ragilriztianda"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-300 hover:text-[#8245ec]"
+            className="text-gray-300 transition hover:text-[#8245ec]"
+            aria-label="LinkedIn profile"
           >
             <FaLinkedin size={24} />
           </a>
         </div>
 
-        {/* Mobile Menu Icon */}
-        <div className="md:hidden">
+        <div className="lg:hidden">
           {isOpen ? (
-            <FiX
-              className="text-3xl text-[#8245ec] cursor-pointer"
+            <button
+              type="button"
               onClick={() => setIsOpen(false)}
-            />
+              aria-label="Close navigation"
+            >
+              <FiX className="cursor-pointer text-3xl text-[#8245ec]" />
+            </button>
           ) : (
-            <FiMenu
-              className="text-3xl text-[#8245ec] cursor-pointer"
+            <button
+              type="button"
               onClick={() => setIsOpen(true)}
-            />
+              aria-label="Open navigation"
+            >
+              <FiMenu className="cursor-pointer text-3xl text-[#8245ec]" />
+            </button>
           )}
         </div>
       </div>
 
-      {/* Mobile Menu Items */}
       {isOpen && (
-        <div className="absolute top-16 left-1/2 transform -translate-x-1/2 w-4/5 bg-[#050414] bg-opacity-50 backdrop-filter backdrop-blur-lg z-50 rounded-lg shadow-lg md:hidden">
-          <ul className="flex flex-col items-center space-y-4 py-4 text-gray-300">
+        <div className="absolute left-1/2 top-16 z-50 w-4/5 -translate-x-1/2 rounded-lg border border-white/10 bg-[#050414]/95 shadow-lg backdrop-blur-lg lg:hidden">
+          <ul className="flex flex-col items-center space-y-4 py-5 text-gray-300">
             {menuItems.map((item) => (
-              <li
-                key={item.id}
-                className={`cursor-pointer hover:text-white ${
-                  activeSection === item.id ? "text-[#8245ec]" : ""
-                }`}
-              >
-                <button onClick={() => handleMenuItemClick(item.id)}>
+              <li key={item.id}>
+                <button
+                  type="button"
+                  onClick={() => handleMenuItemClick(item.id)}
+                  className={`transition hover:text-white ${
+                    activeSection === item.id ? "text-[#8245ec]" : ""
+                  }`}
+                >
                   {item.label}
                 </button>
               </li>
@@ -128,6 +136,7 @@ const Navbar = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white"
+                aria-label="GitHub profile"
               >
                 <FaGithub size={24} />
               </a>
@@ -136,6 +145,7 @@ const Navbar = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white"
+                aria-label="LinkedIn profile"
               >
                 <FaLinkedin size={24} />
               </a>
