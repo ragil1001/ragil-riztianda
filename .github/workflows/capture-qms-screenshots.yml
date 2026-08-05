@@ -14,7 +14,7 @@ permissions:
 jobs:
   capture:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 8
 
     steps:
       - name: Checkout portfolio repository
@@ -36,15 +36,20 @@ jobs:
           cat > capture-qms.cjs <<'EOF'
           const { chromium } = require('playwright');
 
-          const baseUrl = 'https://qmssystem.app';
+          const target = 'https://qmssystem.app';
 
-          async function capture(page, path, output) {
-            await page.goto(`${baseUrl}${path}`, {
-              waitUntil: 'domcontentloaded',
-              timeout: 120000,
+          async function openVerified(page) {
+            const response = await page.goto(target, {
+              waitUntil: 'commit',
+              timeout: 30000,
             });
-            await page.waitForTimeout(7000);
-            await page.screenshot({ path: output, fullPage: true });
+            const status = response?.status() ?? 0;
+            console.log(`QMS HTTP status: ${status}`);
+            if (!response || status >= 400) {
+              throw new Error(`QMS deployment is not publicly reachable. HTTP status: ${status}`);
+            }
+            await page.waitForLoadState('domcontentloaded', { timeout: 30000 }).catch(() => {});
+            await page.waitForTimeout(8000);
           }
 
           (async () => {
@@ -53,18 +58,26 @@ jobs:
             const desktop = await browser.newPage({
               viewport: { width: 1440, height: 1024 },
               deviceScaleFactor: 1,
+              ignoreHTTPSErrors: true,
             });
-            await capture(desktop, '/', 'public/project-screenshots/qms/home-desktop.png');
-            await capture(desktop, '/layanan', 'public/project-screenshots/qms/services-desktop.png');
-            await capture(desktop, '/karir', 'public/project-screenshots/qms/careers-desktop.png');
+            await openVerified(desktop);
+            await desktop.screenshot({
+              path: 'public/project-screenshots/qms/home-desktop.png',
+              fullPage: true,
+            });
 
             const mobile = await browser.newPage({
               viewport: { width: 390, height: 844 },
               deviceScaleFactor: 1,
               isMobile: true,
               hasTouch: true,
+              ignoreHTTPSErrors: true,
             });
-            await capture(mobile, '/', 'public/project-screenshots/qms/home-mobile.png');
+            await openVerified(mobile);
+            await mobile.screenshot({
+              path: 'public/project-screenshots/qms/home-mobile.png',
+              fullPage: true,
+            });
 
             await browser.close();
           })().catch((error) => {
