@@ -85,7 +85,7 @@ const Work = () => {
                   onClick={() => setSelectedProject(project)}
                   className="rounded-xl border border-white/20 px-5 py-3 font-semibold text-white transition hover:bg-white/10"
                 >
-                  View Desktop & Mobile
+                  View Real Screenshots
                 </button>
               </div>
             </div>
@@ -104,7 +104,7 @@ const Work = () => {
             <div className="flex items-center justify-between gap-4 mb-5">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-400">
-                  Captured from production
+                  Captured from the live deployment
                 </p>
                 <h3 className="text-xl md:text-3xl font-bold text-white mt-1">
                   {selectedProject.title}
@@ -120,23 +120,20 @@ const Work = () => {
               </button>
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_390px] items-start">
-              <div>
-                <p className="text-sm font-semibold text-gray-300 mb-2">Desktop deployment</p>
-                <img
-                  src={selectedProject.image}
-                  alt={`${selectedProject.title} desktop production screenshot`}
-                  className="w-full rounded-xl border border-white/10 bg-white object-top"
-                />
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-gray-300 mb-2">Mobile deployment</p>
-                <img
-                  src={selectedProject.mobileImage}
-                  alt={`${selectedProject.title} mobile production screenshot`}
-                  className="w-full rounded-xl border border-white/10 bg-white object-top"
-                />
-              </div>
+            <div className="grid gap-6 md:grid-cols-2 items-start">
+              {selectedProject.gallery.map((screenshot) => (
+                <figure key={screenshot.src} className="min-w-0">
+                  <figcaption className="text-sm font-semibold text-gray-300 mb-2">
+                    {screenshot.label}
+                  </figcaption>
+                  <img
+                    src={screenshot.src}
+                    alt={`${selectedProject.title}: ${screenshot.label}`}
+                    className="w-full rounded-xl border border-white/10 bg-white object-top"
+                    loading="lazy"
+                  />
+                </figure>
+              ))}
             </div>
           </div>
         </div>
