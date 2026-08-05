@@ -1,0 +1,59 @@
+name: Validate complete repository catalog
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - src/data/repositoryCatalog.js
+      - .github/workflows/validate-repository-catalog.yml
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout portfolio source
+        uses: actions/checkout@v4
+
+      - name: Assert all 54 owned repositories are represented exactly once
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          expected = {
+              '3_Bioskop_Backend', 'abs-backend', 'abs-web', 'absensi_qms',
+              'abs_mobile', 'API_E_11672', 'backendBioskop', 'backend_qms',
+              'blackboxai-1745900423800', 'blackboxai-1747014696559',
+              'cs-backend', 'cs-be', 'cs-fe', 'cs_app_be', 'cs_mobile',
+              'flutter_application_2', 'frontend_qms', 'GD11_E_11672',
+              'GD12_E_11672', 'GDLibrary_D_1672', 'GD_API_1672',
+              'guided1_dart_1672', 'hris-be', 'iPA_testing', 'KKN',
+              'laravel-docker', 'p3l_backend', 'p3l_mobile', 'pakel_admin',
+              'pakel_web', 'portofolio', 'presensi_fe', 'presensi_mobile',
+              'profile-backend', 'profile-web', 'PW10_E_11672', 'PW3_E_11672',
+              'PW4_E_11672', 'PW5_E_11672', 'PW6_E_11672', 'PW7_E_11672',
+              'PW8_E_11672', 'qms-company-profile', 'ragil-riztianda',
+              'ragil1001', 'tes', 'tess', 'tesss', 'tes_ios', 'tes_widget',
+              'UGD-Pointer', 'UGD4_Bonus2_E_11672', 'WidgetdanLayout1_1672',
+              'workforce-os',
+          }
+
+          source = Path('src/data/repositoryCatalog.js').read_text(encoding='utf-8')
+          names = re.findall(r'^\s+name:\s+"([^"]+)",$', source, re.MULTILINE)
+          actual = set(names)
+
+          duplicates = sorted({name for name in names if names.count(name) > 1})
+          missing = sorted(expected - actual)
+          unexpected = sorted(actual - expected)
+
+          print(f'CATALOG_ENTRIES={len(names)}')
+          print(f'UNIQUE_REPOSITORIES={len(actual)}')
+          print(f'MISSING={missing}')
+          print(f'UNEXPECTED={unexpected}')
+          print(f'DUPLICATES={duplicates}')
+
+          if len(names) != 54 or len(actual) != 54 or missing or unexpected or duplicates:
+              raise SystemExit('Repository catalog does not exactly match the 54 owned repositories')
+          PY
