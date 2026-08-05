@@ -30,14 +30,14 @@ jobs:
           npm install --no-save playwright@1.52.0
           npx playwright install --with-deps chromium
 
-      - name: Capture locale-fixed Flutter UI after it renders
+      - name: Capture cache-isolated Flutter UI after it renders
         run: |
           mkdir -p public/project-screenshots/presensi-mobile
           cat > capture-presensi.cjs <<'EOF'
           const fs = require('fs');
           const { chromium } = require('playwright');
 
-          const target = 'https://ragil-riztianda.vercel.app/demos/presensi-mobile/';
+          const target = 'https://ragil-riztianda.vercel.app/demos/presensi-mobile-v2/';
 
           function attachDiagnostics(page, label) {
             page.on('console', (message) => {
@@ -58,7 +58,7 @@ jobs:
 
           async function loadRendered(page, label) {
             attachDiagnostics(page, label);
-            const response = await page.goto(target, {
+            const response = await page.goto(`${target}?capture=${Date.now()}`, {
               waitUntil: 'domcontentloaded',
               timeout: 120000,
             });
@@ -68,7 +68,7 @@ jobs:
               throw new Error(`Presensi Mobile demo HTTP status: ${status}`);
             }
 
-            await page.waitForTimeout(30000);
+            await page.waitForTimeout(20000);
 
             const state = await page.evaluate(() => ({
               title: document.title,
@@ -85,7 +85,8 @@ jobs:
             }
           }
 
-          async function capture(page, label, path) {
+          async function capture(context, label, path) {
+            const page = await context.newPage();
             await loadRendered(page, label);
             await page.screenshot({ path, fullPage: true });
             const bytes = fs.statSync(path).size;
@@ -93,32 +94,42 @@ jobs:
             if (bytes < 20000) {
               throw new Error(`Screenshot is likely blank for ${label}: ${bytes} bytes`);
             }
+            await page.close();
           }
 
           (async () => {
-            const browser = await chromium.launch({ headless: true });
+            const browser = await chromium.launch({
+              headless: true,
+              args: ['--enable-unsafe-swiftshader'],
+            });
 
-            const desktop = await browser.newPage({
+            const desktopContext = await browser.newContext({
               viewport: { width: 1440, height: 1024 },
               deviceScaleFactor: 1,
+              locale: 'id-ID',
+              serviceWorkers: 'block',
             });
             await capture(
-              desktop,
+              desktopContext,
               'desktop',
               'public/project-screenshots/presensi-mobile/demo-desktop.png',
             );
+            await desktopContext.close();
 
-            const mobile = await browser.newPage({
+            const mobileContext = await browser.newContext({
               viewport: { width: 390, height: 844 },
               deviceScaleFactor: 1,
               isMobile: true,
               hasTouch: true,
+              locale: 'id-ID',
+              serviceWorkers: 'block',
             });
             await capture(
-              mobile,
+              mobileContext,
               'mobile',
               'public/project-screenshots/presensi-mobile/demo-mobile.png',
             );
+            await mobileContext.close();
 
             await browser.close();
           })().catch((error) => {
