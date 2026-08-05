@@ -1,0 +1,53 @@
+name: Audit public deployment availability
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/audit-public-deployments.yml
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check DNS, HTTP status, redirects and page title
+        shell: bash
+        run: |
+          set +e
+          urls=(
+            "https://ragil-riztianda.vercel.app/"
+            "https://ragil-riztianda.vercel.app/demos/presensi-mobile-v2/"
+            "https://pakel-web.vercel.app/"
+            "https://qmssystem.app/"
+          )
+
+          for url in "${urls[@]}"; do
+            echo "============================================================"
+            echo "URL=$url"
+            host=$(python3 -c 'from urllib.parse import urlparse; import sys; print(urlparse(sys.argv[1]).hostname)' "$url")
+            echo "HOST=$host"
+            getent ahosts "$host" | head -5 || echo "DNS_RESOLUTION_FAILED"
+
+            rm -f /tmp/headers /tmp/body
+            curl -L --connect-timeout 15 --max-time 45 \
+              -A "Mozilla/5.0 DeploymentAudit/1.0" \
+              -D /tmp/headers -o /tmp/body -sS "$url"
+            curl_exit=$?
+            echo "CURL_EXIT=$curl_exit"
+
+            if [ -f /tmp/headers ]; then
+              echo "--- RESPONSE HEADERS ---"
+              grep -E '^(HTTP/|location:|content-type:|server:)' /tmp/headers | tail -20
+            fi
+
+            if [ -f /tmp/body ]; then
+              echo "BODY_BYTES=$(wc -c < /tmp/body)"
+              title=$(grep -ioE '<title[^>]*>[^<]*</title>' /tmp/body | head -1)
+              echo "TITLE=${title:-NONE}"
+              echo "BODY_PREFIX=$(tr '\n' ' ' < /tmp/body | head -c 240)"
+            fi
+          done
