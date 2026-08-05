@@ -30,7 +30,7 @@ jobs:
           npm install --no-save playwright@1.52.0
           npx playwright install --with-deps chromium
 
-      - name: Capture only after the Flutter UI renders
+      - name: Capture locale-fixed Flutter UI after it renders
         run: |
           mkdir -p public/project-screenshots/presensi-mobile
           cat > capture-presensi.cjs <<'EOF'
