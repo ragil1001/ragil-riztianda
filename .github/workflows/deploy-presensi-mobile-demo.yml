@@ -22,7 +22,7 @@ jobs:
         with:
           path: portfolio
 
-      - name: Checkout Presensi Mobile source
+      - name: Checkout latest Presensi Mobile source
         uses: actions/checkout@v4
         with:
           repository: ragil1001/presensi_mobile
