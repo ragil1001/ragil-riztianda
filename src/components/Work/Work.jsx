@@ -7,19 +7,23 @@ const Work = () => {
   return (
     <section
       id="work"
-      className="py-24 px-[7vw] lg:px-[14vw] font-sans relative"
+      className="relative px-[7vw] py-24 font-sans lg:px-[14vw]"
     >
-      <div className="text-center mb-14">
-        <p className="text-sm font-semibold tracking-[0.2em] text-purple-400 uppercase">
-          Verified deployments
+      <div className="mb-14 text-center">
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-purple-400">
+          Selected systems
         </p>
-        <h2 className="text-4xl font-bold text-white mt-3">SELECTED PROJECTS</h2>
-        <p className="text-gray-400 mt-4 text-base max-w-2xl mx-auto leading-relaxed">
-          Every visual below is captured from a real running project. Projects are added one by one only after their deployment and screenshots are verified.
+        <h2 className="mt-3 text-4xl font-bold text-white">
+          PROJECT EVIDENCE
+        </h2>
+        <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-gray-400">
+          These entries contain screenshots captured from prior deployments or
+          verified builds. A screenshot is not treated as proof that its public
+          URL remains active today.
         </p>
       </div>
 
-      <div className="grid gap-10 grid-cols-1">
+      <div className="grid grid-cols-1 gap-10">
         {portfolioProjects.map((project) => (
           <article
             key={project.id}
@@ -34,25 +38,25 @@ const Work = () => {
               <div className="relative bg-white">
                 <img
                   src={project.image}
-                  alt={`${project.title} production website screenshot`}
-                  className="w-full max-h-[620px] object-cover object-top"
+                  alt={`${project.title} project screenshot`}
+                  className="max-h-[620px] w-full object-cover object-top"
                   loading="lazy"
                 />
-                <span className="absolute top-4 left-4 rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-white shadow-lg">
+                <span className="absolute left-4 top-4 rounded-full border border-black/10 bg-white px-3 py-1 text-xs font-bold text-slate-900 shadow-lg">
                   {project.status}
                 </span>
               </div>
             </button>
 
             <div className="p-6 md:p-8">
-              <h3 className="text-2xl md:text-3xl font-bold text-white">
+              <h3 className="text-2xl font-bold text-white md:text-3xl">
                 {project.title}
               </h3>
-              <p className="text-gray-400 mt-4 leading-relaxed max-w-4xl">
+              <p className="mt-4 max-w-4xl leading-relaxed text-gray-400">
                 {project.description}
               </p>
 
-              <div className="flex flex-wrap gap-2 mt-5">
+              <div className="mt-5 flex flex-wrap gap-2">
                 {project.tags.map((tag) => (
                   <span
                     key={tag}
@@ -63,29 +67,31 @@ const Work = () => {
                 ))}
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 mt-7">
-                <a
-                  href={project.webapp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-xl bg-purple-600 px-5 py-3 text-center font-semibold text-white transition hover:bg-purple-700"
-                >
-                  Open Live Site
-                </a>
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                {project.webapp && (
+                  <a
+                    href={project.webapp}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-xl bg-purple-600 px-5 py-3 text-center font-semibold text-white transition hover:bg-purple-700"
+                  >
+                    Open verified deployment
+                  </a>
+                )}
                 <a
                   href={project.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="rounded-xl border border-white/20 px-5 py-3 text-center font-semibold text-white transition hover:bg-white/10"
                 >
-                  View Source Code
+                  View public source
                 </a>
                 <button
                   type="button"
                   onClick={() => setSelectedProject(project)}
                   className="rounded-xl border border-white/20 px-5 py-3 font-semibold text-white transition hover:bg-white/10"
                 >
-                  View Real Screenshots
+                  View screenshot evidence
                 </button>
               </div>
             </div>
@@ -100,15 +106,19 @@ const Work = () => {
           aria-modal="true"
           aria-label={`${selectedProject.title} screenshots`}
         >
-          <div className="mx-auto max-w-6xl rounded-2xl bg-[#0d0c1a] p-4 md:p-7 shadow-2xl">
-            <div className="flex items-center justify-between gap-4 mb-5">
+          <div className="mx-auto max-w-6xl rounded-2xl bg-[#0d0c1a] p-4 shadow-2xl md:p-7">
+            <div className="mb-5 flex items-center justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-400">
-                  Captured from the live deployment
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-purple-300">
+                  Screenshot and build evidence
                 </p>
-                <h3 className="text-xl md:text-3xl font-bold text-white mt-1">
+                <h3 className="mt-1 text-xl font-bold text-white md:text-3xl">
                   {selectedProject.title}
                 </h3>
+                <p className="mt-2 text-sm text-gray-400">
+                  This gallery does not claim that an external domain remains
+                  active.
+                </p>
               </div>
               <button
                 type="button"
@@ -120,10 +130,10 @@ const Work = () => {
               </button>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2 items-start">
+            <div className="grid items-start gap-6 md:grid-cols-2">
               {selectedProject.gallery.map((screenshot) => (
                 <figure key={screenshot.src} className="min-w-0">
-                  <figcaption className="text-sm font-semibold text-gray-300 mb-2">
+                  <figcaption className="mb-2 text-sm font-semibold text-gray-300">
                     {screenshot.label}
                   </figcaption>
                   <img
