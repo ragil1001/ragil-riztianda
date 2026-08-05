@@ -34,7 +34,7 @@ jobs:
 
             rm -f /tmp/headers /tmp/body
             curl -L --connect-timeout 15 --max-time 45 \
-              -A "Mozilla/5.0 DeploymentAudit/2.0" \
+              -A "Mozilla/5.0 DeploymentAudit/3.0" \
               -D /tmp/headers -o /tmp/body -sS "$url"
             curl_exit=$?
             echo "CURL_EXIT=$curl_exit"
@@ -99,9 +99,26 @@ jobs:
               });
               const page = await context.newPage();
               const pageErrors = [];
+              const failedResources = [];
+
               page.on('pageerror', (error) => pageErrors.push(error.message));
               page.on('console', (message) => {
                 if (message.type() === 'error') pageErrors.push(message.text());
+              });
+              page.on('response', (response) => {
+                if (response.status() >= 400) {
+                  failedResources.push({
+                    status: response.status(),
+                    url: response.url(),
+                  });
+                }
+              });
+              page.on('requestfailed', (request) => {
+                failedResources.push({
+                  status: 'REQUEST_FAILED',
+                  url: request.url(),
+                  error: request.failure()?.errorText || 'unknown',
+                });
               });
 
               console.log(`============================================================`);
@@ -123,6 +140,7 @@ jobs:
                 console.log(`BODY_TEXT_BYTES=${Buffer.byteLength(bodyText)}`);
                 console.log(`FLUTTER_RENDER_NODES=${flutterViews}`);
                 console.log(`PAGE_ERRORS=${JSON.stringify(pageErrors)}`);
+                console.log(`FAILED_RESOURCES=${JSON.stringify(failedResources)}`);
 
                 if (status >= 400) {
                   failed = true;
@@ -136,7 +154,7 @@ jobs:
                 ) {
                   failed = true;
                   console.log(`RESULT=FAIL_REQUIRED_TEXT`);
-                } else if (pageErrors.length > 0) {
+                } else if (pageErrors.length > 0 || failedResources.length > 0) {
                   failed = true;
                   console.log(`RESULT=FAIL_RUNTIME_ERRORS`);
                 } else {
