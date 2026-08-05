@@ -1,0 +1,94 @@
+name: Capture real Presensi Mobile demo screenshots
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/capture-presensi-mobile-demo.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout portfolio repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.52.0
+          npx playwright install --with-deps chromium
+
+      - name: Capture the deployed Flutter application
+        run: |
+          mkdir -p public/project-screenshots/presensi-mobile
+          cat > capture-presensi.cjs <<'EOF'
+          const { chromium } = require('playwright');
+
+          const target = 'https://ragil-riztianda.vercel.app/demos/presensi-mobile/';
+
+          async function load(page) {
+            const response = await page.goto(target, {
+              waitUntil: 'domcontentloaded',
+              timeout: 120000,
+            });
+            const status = response?.status() ?? 0;
+            if (!response || status >= 400) {
+              throw new Error(`Presensi Mobile demo HTTP status: ${status}`);
+            }
+            await page.waitForTimeout(15000);
+          }
+
+          (async () => {
+            const browser = await chromium.launch({ headless: true });
+
+            const desktop = await browser.newPage({
+              viewport: { width: 1440, height: 1024 },
+              deviceScaleFactor: 1,
+            });
+            await load(desktop);
+            await desktop.screenshot({
+              path: 'public/project-screenshots/presensi-mobile/demo-desktop.png',
+              fullPage: true,
+            });
+
+            const mobile = await browser.newPage({
+              viewport: { width: 390, height: 844 },
+              deviceScaleFactor: 1,
+              isMobile: true,
+              hasTouch: true,
+            });
+            await load(mobile);
+            await mobile.screenshot({
+              path: 'public/project-screenshots/presensi-mobile/demo-mobile.png',
+              fullPage: true,
+            });
+
+            await browser.close();
+          })().catch((error) => {
+            console.error(error);
+            process.exit(1);
+          });
+          EOF
+          node capture-presensi.cjs
+          rm capture-presensi.cjs
+
+      - name: Commit real screenshots
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/project-screenshots/presensi-mobile
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: capture real Presensi Mobile demo screenshots [skip ci]"
+          git push
