@@ -1,117 +1,78 @@
-import React, { useRef, useState } from "react";
-import emailjs from "@emailjs/browser";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FiMail, FiMapPin } from "react-icons/fi";
 
 const Contact = () => {
-  const form = useRef();
-  const [isSent, setIsSent] = useState(false);
-
-  const sendEmail = (e) => {
-    e.preventDefault();
-
-    emailjs
-      .sendForm(
-        "service_vtz91hk", // Replace with your EmailJS Service ID
-        "template_oa95iju", // Replace with your EmailJS Template ID
-        form.current,
-        "rFXpe9HY6D5Tfk8hH" // Replace with your EmailJS Public Key
-      )
-      .then(
-        () => {
-          setIsSent(true);
-          form.current.reset(); // Reset form fields after sending
-          toast.success("Message sent successfully! ✅", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            theme: "dark",
-          });
-        },
-        (error) => {
-          console.error("Error sending message:", error);
-          toast.error("Failed to send message. Please try again.", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            theme: "dark",
-          });
-        }
-      );
-  };
-
   return (
-    <section
-      id="contact"
-      className="flex flex-col items-center justify-center py-24 px-[12vw] md:px-[7vw] lg:px-[20vw]"
-    >
-      {/* Toast Container */}
-      <ToastContainer />
+    <section id="contact" className="px-[7vw] py-24 font-sans lg:px-[14vw] lg:py-32">
+      <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.035] p-7 md:p-10 lg:p-12">
+        <div className="grid gap-10 lg:grid-cols-[1fr_0.8fr] lg:items-end">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-purple-300">
+              Contact
+            </p>
+            <h2 className="mt-3 max-w-3xl text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
+              Looking for a developer who can work across the product stack?
+            </h2>
+            <p className="mt-5 max-w-2xl text-base leading-8 text-gray-400 sm:text-lg">
+              I am open to Software Engineer, Full-Stack, Backend, Frontend, Mobile Developer, and Programmer opportunities. I am also open to programming-instructor roles where hands-on development experience is useful.
+            </p>
+          </div>
 
-      {/* Section Title */}
-      <div className="text-center mb-16">
-        <h2 className="text-4xl font-bold text-white">CONTACT</h2>
-        <div className="w-32 h-1 bg-purple-500 mx-auto mt-4"></div>
-        <p className="text-gray-400 mt-4 text-lg font-semibold">
-          I’d love to hear from you—reach out for any opportunities or
-          questions!
-        </p>
-      </div>
+          <div className="space-y-3">
+            <a
+              href="mailto:ragilriztianda2@gmail.com"
+              className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#111020] p-4 transition hover:border-purple-400/40 hover:bg-[#151326]"
+            >
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-purple-500/10 text-purple-300">
+                <FiMail size={20} />
+              </span>
+              <span>
+                <span className="block text-xs uppercase tracking-[0.14em] text-gray-500">Email</span>
+                <span className="mt-1 block font-semibold text-white">ragilriztianda2@gmail.com</span>
+              </span>
+            </a>
 
-      {/* Contact Form */}
-      <div className="mt-8 w-full max-w-md bg-[#0d081f] p-6 rounded-lg shadow-lg border border-gray-700">
-        <h3 className="text-xl font-semibold text-white text-center">
-          Connect With Me <span className="ml-1">🚀</span>
-        </h3>
+            <a
+              href="https://www.linkedin.com/in/ragilriztianda"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#111020] p-4 transition hover:border-purple-400/40 hover:bg-[#151326]"
+            >
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-purple-500/10 text-purple-300">
+                <FaLinkedin size={20} />
+              </span>
+              <span>
+                <span className="block text-xs uppercase tracking-[0.14em] text-gray-500">LinkedIn</span>
+                <span className="mt-1 block font-semibold text-white">linkedin.com/in/ragilriztianda</span>
+              </span>
+            </a>
 
-        <form
-          ref={form}
-          onSubmit={sendEmail}
-          className="mt-4 flex flex-col space-y-4"
-        >
-          <input
-            type="email"
-            name="user_email"
-            placeholder="Your Email"
-            required
-            className="w-full p-3 rounded-md bg-[#131025] text-white border border-gray-600 focus:outline-none focus:border-purple-500"
-          />
-          <input
-            type="text"
-            name="user_name"
-            placeholder="Your Name"
-            required
-            className="w-full p-3 rounded-md bg-[#131025] text-white border border-gray-600 focus:outline-none focus:border-purple-500"
-          />
-          <input
-            type="text"
-            name="subject"
-            placeholder="Subject"
-            required
-            className="w-full p-3 rounded-md bg-[#131025] text-white border border-gray-600 focus:outline-none focus:border-purple-500"
-          />
-          <textarea
-            name="message"
-            placeholder="Message"
-            rows="4"
-            required
-            className="w-full p-3 rounded-md bg-[#131025] text-white border border-gray-600 focus:outline-none focus:border-purple-500"
-          />
+            <a
+              href="https://github.com/ragil1001"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#111020] p-4 transition hover:border-purple-400/40 hover:bg-[#151326]"
+            >
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-purple-500/10 text-purple-300">
+                <FaGithub size={20} />
+              </span>
+              <span>
+                <span className="block text-xs uppercase tracking-[0.14em] text-gray-500">Source-level work</span>
+                <span className="mt-1 block font-semibold text-white">github.com/ragil1001</span>
+              </span>
+            </a>
 
-          {/* Send Button */}
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-purple-600 to-pink-500 py-3 text-white font-semibold rounded-md hover:opacity-90 transition"
-          >
-            Send
-          </button>
-        </form>
+            <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#111020] p-4">
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-purple-500/10 text-purple-300">
+                <FiMapPin size={20} />
+              </span>
+              <span>
+                <span className="block text-xs uppercase tracking-[0.14em] text-gray-500">Location</span>
+                <span className="mt-1 block font-semibold text-white">Singkawang, West Kalimantan, Indonesia</span>
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
