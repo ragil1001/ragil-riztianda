@@ -3,66 +3,54 @@ import { experiences } from "../../constants";
 
 const Experience = () => {
   return (
-    <section
-      id="experience"
-      className="px-[7vw] py-24 font-sans lg:px-[14vw]"
-    >
-      <div className="mb-12 max-w-3xl">
-        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-purple-300">
-          Experience
-        </p>
-        <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
-          Building software and helping others learn it.
-        </h2>
-        <p className="mt-4 text-base leading-7 text-gray-400 sm:text-lg">
-          My experience combines end-to-end product development with teaching and mentoring. The common thread is translating requirements into something people can use and understand.
-        </p>
-      </div>
+    <section id="experience" className="bg-[#f4f5f7]">
+      <div className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-4">
+            <h2 className="max-w-sm text-4xl font-bold leading-[1.02] tracking-[-0.055em] text-[#101216] sm:text-5xl">
+              Experience shaped by building and teaching.
+            </h2>
+            <p className="mt-5 max-w-sm leading-7 text-[#686e77]">
+              Product development gave me system context. Teaching made me explain technical decisions clearly.
+            </p>
+          </div>
 
-      <div className="space-y-5">
-        {experiences.map((experience) => (
-          <article
-            key={experience.id}
-            className="grid gap-5 rounded-2xl border border-white/10 bg-white/[0.035] p-6 md:grid-cols-[180px_1fr] md:p-8"
-          >
-            <div>
-              <p className="text-sm font-semibold text-purple-300">{experience.date}</p>
-              <p className="mt-2 text-sm text-gray-500">{experience.location}</p>
-            </div>
+          <div className="border-t border-black/10 lg:col-span-8">
+            {experiences.map((experience) => (
+              <article
+                key={experience.id}
+                className="grid gap-5 border-b border-black/10 py-8 md:grid-cols-[170px_1fr] md:gap-8 md:py-10"
+              >
+                <div>
+                  <p className="text-sm font-semibold text-[#2055ff]">{experience.date}</p>
+                  <p className="mt-2 text-sm leading-6 text-[#858a92]">{experience.location}</p>
+                </div>
 
-            <div>
-              <h3 className="text-xl font-bold text-white sm:text-2xl">
-                {experience.role}
-              </h3>
-              <p className="mt-1 font-medium text-gray-300">{experience.company}</p>
-              <p className="mt-4 max-w-4xl leading-7 text-gray-400">
-                {experience.desc}
-              </p>
+                <div>
+                  <h3 className="text-2xl font-bold tracking-[-0.035em] text-[#101216]">
+                    {experience.role}
+                  </h3>
+                  <p className="mt-1 font-medium text-[#565c65]">{experience.company}</p>
+                  <p className="mt-5 max-w-[760px] leading-7 text-[#656b74]">
+                    {experience.desc}
+                  </p>
 
-              {experience.highlights?.length > 0 && (
-                <ul className="mt-5 grid gap-3 text-sm leading-6 text-gray-300 md:grid-cols-2">
-                  {experience.highlights.map((highlight) => (
-                    <li key={highlight} className="flex gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-purple-400" />
-                      <span>{highlight}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
+                  {experience.highlights?.length > 0 && (
+                    <ul className="mt-6 space-y-3 border-l border-black/15 pl-5 text-sm leading-6 text-[#555b65]">
+                      {experience.highlights.map((highlight) => (
+                        <li key={highlight}>{highlight}</li>
+                      ))}
+                    </ul>
+                  )}
 
-              <div className="mt-5 flex flex-wrap gap-2">
-                {experience.skills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="rounded-full border border-white/10 bg-[#151326] px-3 py-1 text-xs font-semibold text-gray-300"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </article>
-        ))}
+                  <p className="mt-6 text-sm leading-6 text-[#8a8f97]">
+                    {experience.skills.join(" / ")}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
