@@ -1,131 +1,104 @@
 import React, { useEffect, useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+
+const navigation = [
+  { id: "work", label: "Work" },
+  { id: "experience", label: "Experience" },
+  { id: "skills", label: "Toolkit" },
+  { id: "education", label: "Education" },
+];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setIsScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleMenuItemClick = (sectionId) => {
-    setActiveSection(sectionId);
+  const goTo = (id) => {
     setIsOpen(false);
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
-
-  const menuItems = [
-    { id: "about", label: "About" },
-    { id: "experience", label: "Experience" },
-    { id: "work", label: "Selected Work" },
-    { id: "skills", label: "Skills" },
-    { id: "education", label: "Education" },
-    { id: "contact", label: "Contact" },
-  ];
 
   return (
     <nav
-      className={`fixed top-0 z-50 w-full px-[7vw] transition duration-300 lg:px-[14vw] ${
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
         isScrolled
-          ? "border-b border-white/10 bg-[#050414]/90 backdrop-blur-xl"
+          ? "border-b border-black/10 bg-[#f4f5f7]/95 backdrop-blur-lg"
           : "bg-transparent"
       }`}
+      aria-label="Primary navigation"
     >
-      <div className="flex items-center justify-between py-5 text-white">
+      <div className="mx-auto flex h-[76px] max-w-[1400px] items-center justify-between px-5 sm:px-8 lg:px-12">
         <button
           type="button"
-          onClick={() => handleMenuItemClick("about")}
-          className="text-base font-bold tracking-tight sm:text-lg"
+          onClick={() => goTo("about")}
+          className="text-left text-[15px] font-bold tracking-[-0.03em] text-[#101216]"
         >
-          Ragil Riztianda<span className="text-purple-400">.</span>
+          Ragil Riztianda
         </button>
 
-        <ul className="hidden items-center gap-6 text-sm text-gray-300 lg:flex">
-          {menuItems.map((item) => (
-            <li key={item.id}>
-              <button
-                type="button"
-                onClick={() => handleMenuItemClick(item.id)}
-                className={`transition hover:text-white ${
-                  activeSection === item.id ? "text-purple-300" : ""
-                }`}
-              >
-                {item.label}
-              </button>
-            </li>
-          ))}
-        </ul>
-
-        <div className="hidden items-center gap-4 md:flex">
-          <a
-            href="https://www.linkedin.com/in/ragilriztianda"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-300 transition hover:text-white"
-            aria-label="LinkedIn profile"
-          >
-            <FaLinkedin size={22} />
-          </a>
-          <a
-            href="https://github.com/ragil1001"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-300 transition hover:text-white"
-            aria-label="GitHub profile"
-          >
-            <FaGithub size={22} />
-          </a>
-        </div>
-
-        <button
-          type="button"
-          onClick={() => setIsOpen((value) => !value)}
-          className="lg:hidden"
-          aria-label={isOpen ? "Close navigation" : "Open navigation"}
-        >
-          {isOpen ? <FiX className="text-3xl" /> : <FiMenu className="text-3xl" />}
-        </button>
-      </div>
-
-      {isOpen && (
-        <div className="absolute left-1/2 top-16 w-[86%] -translate-x-1/2 rounded-2xl border border-white/10 bg-[#0b0a17]/95 p-5 shadow-2xl backdrop-blur-xl lg:hidden">
-          <ul className="flex flex-col gap-4 text-gray-300">
-            {menuItems.map((item) => (
+        <div className="hidden items-center gap-8 lg:flex">
+          <ul className="flex items-center gap-7 text-sm font-medium text-[#5c626b]">
+            {navigation.map((item) => (
               <li key={item.id}>
                 <button
                   type="button"
-                  onClick={() => handleMenuItemClick(item.id)}
-                  className="w-full text-left transition hover:text-white"
+                  onClick={() => goTo(item.id)}
+                  className="transition-colors hover:text-[#101216]"
                 >
                   {item.label}
                 </button>
               </li>
             ))}
           </ul>
-          <div className="mt-5 flex gap-4 border-t border-white/10 pt-5">
-            <a
-              href="https://www.linkedin.com/in/ragilriztianda"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-300 hover:text-white"
-              aria-label="LinkedIn profile"
+          <button
+            type="button"
+            onClick={() => goTo("contact")}
+            className="rounded-full bg-[#101216] px-5 py-2.5 text-sm font-semibold text-white transition-transform active:scale-[0.98]"
+          >
+            Contact
+          </button>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setIsOpen((current) => !current)}
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-[#101216] lg:hidden"
+          aria-label={isOpen ? "Close navigation" : "Open navigation"}
+          aria-expanded={isOpen}
+        >
+          {isOpen ? <FiX size={20} /> : <FiMenu size={20} />}
+        </button>
+      </div>
+
+      {isOpen && (
+        <div className="border-t border-black/10 bg-[#f4f5f7] px-5 pb-6 pt-3 lg:hidden">
+          <div className="mx-auto max-w-[1400px]">
+            <ul className="divide-y divide-black/10">
+              {navigation.map((item) => (
+                <li key={item.id}>
+                  <button
+                    type="button"
+                    onClick={() => goTo(item.id)}
+                    className="w-full py-4 text-left text-lg font-semibold tracking-[-0.02em] text-[#101216]"
+                  >
+                    {item.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button
+              type="button"
+              onClick={() => goTo("contact")}
+              className="mt-5 w-full rounded-full bg-[#2055ff] px-5 py-3.5 text-sm font-semibold text-white active:scale-[0.98]"
             >
-              <FaLinkedin size={22} />
-            </a>
-            <a
-              href="https://github.com/ragil1001"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-300 hover:text-white"
-              aria-label="GitHub profile"
-            >
-              <FaGithub size={22} />
-            </a>
+              Contact
+            </button>
           </div>
         </div>
       )}
