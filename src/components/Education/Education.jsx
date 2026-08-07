@@ -1,63 +1,61 @@
 import React from "react";
-import { education } from "../../constants"; // Import the education data
+import { education } from "../../constants";
 
 const Education = () => {
   return (
     <section
       id="education"
-      className="py-24 pb-24 px-[12vw] md:px-[7vw] lg:px-[16vw] font-sans bg-skills-gradient clip-path-custom-3"
+      className="px-[7vw] py-24 font-sans lg:px-[14vw]"
     >
-      {/* Section Title */}
-      <div className="text-center mb-16">
-        <h2 className="text-4xl font-bold text-white">EDUCATION</h2>
-        <div className="w-32 h-1 bg-purple-500 mx-auto mt-4"></div>
-        <p className="text-gray-400 mt-4 text-lg font-semibold">
-          My education has been a journey of learning and development. Here are
-          the details of my academic background
+      <div className="mb-10 max-w-3xl">
+        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-purple-300">
+          Education
         </p>
+        <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
+          Academic foundation.
+        </h2>
       </div>
 
-      {/* Education Timeline */}
-      <div className="relative flex justify-center">
-        {/* Vertical line - hidden since we're centering */}
-        <div className="hidden"></div>
-
-        {/* Education Entries */}
-        {education.map((edu) => (
-          <div key={edu.id} className="flex flex-col items-center mb-16">
-            {/* Content Section - Centered */}
-            <div className="w-full sm:max-w-md p-4 sm:p-8 rounded-2xl border border-white bg-gray-900 backdrop-blur-md shadow-[0_0_20px_1px_rgba(130,69,236,0.3)] transform transition-transform duration-300 hover:scale-105">
-              {/* Flex container for image and text */}
-              <div className="flex items-center space-x-6">
-                {/* School Logo/Image */}
-                <div className="w-24 h-16 bg-white rounded-md overflow-hidden">
-                  <img
-                    src={edu.img}
-                    alt={edu.school}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-
-                {/* Degree, School Name, and Date */}
-                <div className="flex flex-col justify-between">
-                  <div>
-                    <h3 className="text-xl sm:text-xl font-semibold text-white">
-                      {edu.degree}
-                    </h3>
-                    <h4 className="text-md sm:text-sm text-gray-300">
-                      {edu.school}
-                    </h4>
-                  </div>
-                  {/* Date at the bottom */}
-                  <p className="text-sm text-gray-500 mt-2">{edu.date}</p>
-                </div>
-              </div>
-
-              <p className="mt-4 text-gray-400 font-bold">Grade: {edu.grade}</p>
-              <p className="mt-4 text-gray-400">{edu.desc}</p>
+      {education.map((edu) => (
+        <article
+          key={edu.id}
+          className="max-w-4xl rounded-2xl border border-white/10 bg-white/[0.035] p-6 md:p-8"
+        >
+          <div className="flex flex-col justify-between gap-5 md:flex-row md:items-start">
+            <div>
+              <h3 className="text-2xl font-bold text-white">{edu.degree}</h3>
+              <p className="mt-1 text-lg text-gray-300">{edu.school}</p>
+              <p className="mt-5 max-w-3xl leading-7 text-gray-400">{edu.desc}</p>
+            </div>
+            <div className="shrink-0 md:text-right">
+              <p className="font-semibold text-purple-300">{edu.date}</p>
+              <p className="mt-2 text-sm text-gray-400">GPA {edu.grade}</p>
             </div>
           </div>
-        ))}
+        </article>
+      ))}
+
+      <div className="mt-5 grid max-w-4xl gap-4 md:grid-cols-2">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-5">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-gray-500">
+            Certification
+          </p>
+          <p className="mt-2 font-semibold text-white">
+            Certified Secure Computer User (CSCU)
+          </p>
+          <p className="mt-1 text-sm text-gray-400">EC-Council · 2022</p>
+        </div>
+        <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-5">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-gray-500">
+            Award
+          </p>
+          <p className="mt-2 font-semibold text-white">
+            Runner-Up, Programming In Contest 2023
+          </p>
+          <p className="mt-1 text-sm text-gray-400">
+            Faculty-level team competition · Kelompok Studi Pemrograman · C
+          </p>
+        </div>
       </div>
     </section>
   );
