@@ -1,77 +1,51 @@
-import { FaGithub, FaLinkedin } from "react-icons/fa";
-import { FiMail, FiMapPin } from "react-icons/fi";
+import React from "react";
+import { FiArrowUpRight } from "react-icons/fi";
 
 const Contact = () => {
   return (
-    <section id="contact" className="px-[7vw] py-24 font-sans lg:px-[14vw] lg:py-32">
-      <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.035] p-7 md:p-10 lg:p-12">
-        <div className="grid gap-10 lg:grid-cols-[1fr_0.8fr] lg:items-end">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-purple-300">
-              Contact
-            </p>
-            <h2 className="mt-3 max-w-3xl text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
-              Looking for a developer who can work across the product stack?
+    <section id="contact" className="border-t border-black/10 bg-[#edf0f4]">
+      <div className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+        <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-8">
+            <h2 className="max-w-[850px] text-5xl font-bold leading-[0.98] tracking-[-0.065em] text-[#101216] sm:text-6xl lg:text-7xl">
+              Let&apos;s talk about software that needs to work.
             </h2>
-            <p className="mt-5 max-w-2xl text-base leading-8 text-gray-400 sm:text-lg">
-              I am open to Software Engineer, Full-Stack, Backend, Frontend, Mobile Developer, and Programmer opportunities. I am also open to programming-instructor roles where hands-on development experience is useful.
+            <p className="mt-6 max-w-[620px] text-lg leading-8 text-[#626872]">
+              For software engineering opportunities, project conversations, or technical collaboration, email is the fastest way to reach me.
             </p>
           </div>
 
-          <div className="space-y-3">
+          <div className="lg:col-span-4 lg:justify-self-end">
             <a
               href="mailto:ragilriztianda2@gmail.com"
-              className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#111020] p-4 transition hover:border-purple-400/40 hover:bg-[#151326]"
+              className="inline-flex items-center gap-2 rounded-full bg-[#2055ff] px-6 py-3.5 text-sm font-semibold text-white transition-transform active:scale-[0.98]"
             >
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-purple-500/10 text-purple-300">
-                <FiMail size={20} />
-              </span>
-              <span>
-                <span className="block text-xs uppercase tracking-[0.14em] text-gray-500">Email</span>
-                <span className="mt-1 block font-semibold text-white">ragilriztianda2@gmail.com</span>
-              </span>
+              Contact
+              <FiArrowUpRight size={17} />
             </a>
-
-            <a
-              href="https://www.linkedin.com/in/ragilriztianda"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#111020] p-4 transition hover:border-purple-400/40 hover:bg-[#151326]"
-            >
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-purple-500/10 text-purple-300">
-                <FaLinkedin size={20} />
-              </span>
-              <span>
-                <span className="block text-xs uppercase tracking-[0.14em] text-gray-500">LinkedIn</span>
-                <span className="mt-1 block font-semibold text-white">linkedin.com/in/ragilriztianda</span>
-              </span>
-            </a>
-
-            <a
-              href="https://github.com/ragil1001"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#111020] p-4 transition hover:border-purple-400/40 hover:bg-[#151326]"
-            >
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-purple-500/10 text-purple-300">
-                <FaGithub size={20} />
-              </span>
-              <span>
-                <span className="block text-xs uppercase tracking-[0.14em] text-gray-500">Source-level work</span>
-                <span className="mt-1 block font-semibold text-white">github.com/ragil1001</span>
-              </span>
-            </a>
-
-            <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#111020] p-4">
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-purple-500/10 text-purple-300">
-                <FiMapPin size={20} />
-              </span>
-              <span>
-                <span className="block text-xs uppercase tracking-[0.14em] text-gray-500">Location</span>
-                <span className="mt-1 block font-semibold text-white">Singkawang, West Kalimantan, Indonesia</span>
-              </span>
-            </div>
+            <p className="mt-5 break-all text-sm text-[#666c75]">
+              ragilriztianda2@gmail.com
+            </p>
           </div>
+        </div>
+
+        <div className="mt-20 flex flex-wrap gap-x-7 gap-y-3 border-t border-black/10 pt-6 text-sm font-semibold text-[#505761]">
+          <a
+            href="https://www.linkedin.com/in/ragilriztianda"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 hover:text-[#2055ff]"
+          >
+            LinkedIn <FiArrowUpRight size={14} />
+          </a>
+          <a
+            href="https://github.com/ragil1001"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 hover:text-[#2055ff]"
+          >
+            GitHub <FiArrowUpRight size={14} />
+          </a>
         </div>
       </div>
     </section>
