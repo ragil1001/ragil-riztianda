@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 
@@ -8,10 +8,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 40);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -19,27 +16,23 @@ const Navbar = () => {
   const handleMenuItemClick = (sectionId) => {
     setActiveSection(sectionId);
     setIsOpen(false);
-
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
   };
 
   const menuItems = [
     { id: "about", label: "About" },
-    { id: "skills", label: "Skills" },
     { id: "experience", label: "Experience" },
-    { id: "work", label: "Projects" },
-    { id: "repositories", label: "All Repositories" },
+    { id: "work", label: "Selected Work" },
+    { id: "skills", label: "Skills" },
     { id: "education", label: "Education" },
+    { id: "contact", label: "Contact" },
   ];
 
   return (
     <nav
-      className={`fixed top-0 z-50 w-full px-[7vw] transition duration-300 md:px-[7vw] lg:px-[14vw] ${
+      className={`fixed top-0 z-50 w-full px-[7vw] transition duration-300 lg:px-[14vw] ${
         isScrolled
-          ? "bg-[#050414]/90 shadow-md backdrop-blur-md"
+          ? "border-b border-white/10 bg-[#050414]/90 backdrop-blur-xl"
           : "bg-transparent"
       }`}
     >
@@ -47,23 +40,19 @@ const Navbar = () => {
         <button
           type="button"
           onClick={() => handleMenuItemClick("about")}
-          className="cursor-pointer text-lg font-semibold"
+          className="text-base font-bold tracking-tight sm:text-lg"
         >
-          <span className="text-[#8245ec]">&lt;</span>
-          <span className="text-white">Ragil</span>
-          <span className="text-[#8245ec]">/</span>
-          <span className="text-white">Riztianda</span>
-          <span className="text-[#8245ec]">&gt;</span>
+          Ragil Riztianda<span className="text-purple-400">.</span>
         </button>
 
-        <ul className="hidden items-center gap-5 text-sm text-gray-300 lg:flex">
+        <ul className="hidden items-center gap-6 text-sm text-gray-300 lg:flex">
           {menuItems.map((item) => (
             <li key={item.id}>
               <button
                 type="button"
                 onClick={() => handleMenuItemClick(item.id)}
-                className={`transition hover:text-[#8245ec] ${
-                  activeSection === item.id ? "text-[#8245ec]" : ""
+                className={`transition hover:text-white ${
+                  activeSection === item.id ? "text-purple-300" : ""
                 }`}
               >
                 {item.label}
@@ -72,85 +61,72 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <div className="hidden space-x-4 md:flex">
-          <a
-            href="https://github.com/ragil1001"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-300 transition hover:text-[#8245ec]"
-            aria-label="GitHub profile"
-          >
-            <FaGithub size={24} />
-          </a>
+        <div className="hidden items-center gap-4 md:flex">
           <a
             href="https://www.linkedin.com/in/ragilriztianda"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-300 transition hover:text-[#8245ec]"
+            className="text-gray-300 transition hover:text-white"
             aria-label="LinkedIn profile"
           >
-            <FaLinkedin size={24} />
+            <FaLinkedin size={22} />
+          </a>
+          <a
+            href="https://github.com/ragil1001"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-300 transition hover:text-white"
+            aria-label="GitHub profile"
+          >
+            <FaGithub size={22} />
           </a>
         </div>
 
-        <div className="lg:hidden">
-          {isOpen ? (
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              aria-label="Close navigation"
-            >
-              <FiX className="cursor-pointer text-3xl text-[#8245ec]" />
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => setIsOpen(true)}
-              aria-label="Open navigation"
-            >
-              <FiMenu className="cursor-pointer text-3xl text-[#8245ec]" />
-            </button>
-          )}
-        </div>
+        <button
+          type="button"
+          onClick={() => setIsOpen((value) => !value)}
+          className="lg:hidden"
+          aria-label={isOpen ? "Close navigation" : "Open navigation"}
+        >
+          {isOpen ? <FiX className="text-3xl" /> : <FiMenu className="text-3xl" />}
+        </button>
       </div>
 
       {isOpen && (
-        <div className="absolute left-1/2 top-16 z-50 w-4/5 -translate-x-1/2 rounded-lg border border-white/10 bg-[#050414]/95 shadow-lg backdrop-blur-lg lg:hidden">
-          <ul className="flex flex-col items-center space-y-4 py-5 text-gray-300">
+        <div className="absolute left-1/2 top-16 w-[86%] -translate-x-1/2 rounded-2xl border border-white/10 bg-[#0b0a17]/95 p-5 shadow-2xl backdrop-blur-xl lg:hidden">
+          <ul className="flex flex-col gap-4 text-gray-300">
             {menuItems.map((item) => (
               <li key={item.id}>
                 <button
                   type="button"
                   onClick={() => handleMenuItemClick(item.id)}
-                  className={`transition hover:text-white ${
-                    activeSection === item.id ? "text-[#8245ec]" : ""
-                  }`}
+                  className="w-full text-left transition hover:text-white"
                 >
                   {item.label}
                 </button>
               </li>
             ))}
-            <div className="flex space-x-4">
-              <a
-                href="https://github.com/ragil1001"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white"
-                aria-label="GitHub profile"
-              >
-                <FaGithub size={24} />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/ragilriztianda"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white"
-                aria-label="LinkedIn profile"
-              >
-                <FaLinkedin size={24} />
-              </a>
-            </div>
           </ul>
+          <div className="mt-5 flex gap-4 border-t border-white/10 pt-5">
+            <a
+              href="https://www.linkedin.com/in/ragilriztianda"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-300 hover:text-white"
+              aria-label="LinkedIn profile"
+            >
+              <FaLinkedin size={22} />
+            </a>
+            <a
+              href="https://github.com/ragil1001"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-300 hover:text-white"
+              aria-label="GitHub profile"
+            >
+              <FaGithub size={22} />
+            </a>
+          </div>
         </div>
       )}
     </nav>
