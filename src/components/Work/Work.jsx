@@ -53,11 +53,11 @@ const Work = () => {
       <div className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
         <div className="max-w-[760px]">
           <h2 className="text-4xl font-bold leading-[1.02] tracking-[-0.055em] text-[#101216] sm:text-5xl lg:text-6xl">
-            Selected work, not a repository dump.
+            Systems I&apos;ve built across web and mobile.
           </h2>
           <p className="mt-5 max-w-[650px] text-lg leading-8 text-[#626872]">
-            Four projects that show how I think across product flow, interface,
-            backend behavior, mobile constraints, and operational data.
+            Four case studies covering product flow, interface, backend behavior,
+            mobile constraints, and operational data.
           </p>
         </div>
 
