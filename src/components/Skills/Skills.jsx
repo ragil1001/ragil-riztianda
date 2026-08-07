@@ -3,41 +3,39 @@ import { SkillsInfo } from "../../constants";
 
 const Skills = () => {
   return (
-    <section
-      id="skills"
-      className="px-[7vw] py-24 font-sans lg:px-[14vw]"
-    >
-      <div className="mb-12 max-w-3xl">
-        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-purple-300">
-          Technical capabilities
-        </p>
-        <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
-          Tools I use to ship across the stack.
-        </h2>
-        <p className="mt-4 text-base leading-7 text-gray-400 sm:text-lg">
-          I focus on technologies I have used in coursework, internship work, and complete application builds rather than listing every tool I have ever tried.
-        </p>
-      </div>
+    <section id="skills" className="border-y border-black/10 bg-[#101216] text-white">
+      <div className="mx-auto max-w-[1400px] px-5 py-24 sm:px-8 lg:px-12 lg:py-28">
+        <div className="max-w-[760px]">
+          <h2 className="text-4xl font-bold leading-[1.02] tracking-[-0.055em] sm:text-5xl lg:text-6xl">
+            A practical toolkit across the stack.
+          </h2>
+          <p className="mt-5 max-w-[620px] text-lg leading-8 text-white/60">
+            Technologies I have used in complete application flows, internship work, teaching, and academic projects.
+          </p>
+        </div>
 
-      <div className="grid gap-5 md:grid-cols-2">
-        {SkillsInfo.map((category) => (
-          <div
-            key={category.title}
-            className="rounded-2xl border border-white/10 bg-white/[0.035] p-6"
-          >
-            <h3 className="text-lg font-bold text-white">{category.title}</h3>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {category.skills.map((skill) => (
-                <span
-                  key={skill}
-                  className="rounded-full border border-white/10 bg-[#151326] px-3 py-1.5 text-sm text-gray-300"
-                >
-                  {skill}
-                </span>
-              ))}
+        <div className="mt-14 grid border-t border-white/15 md:grid-cols-2 xl:grid-cols-4">
+          {SkillsInfo.map((category, index) => (
+            <div
+              key={category.title}
+              className={`border-b border-white/15 py-8 md:px-7 xl:min-h-[320px] xl:border-b-0 ${
+                index % 2 === 1 ? "md:border-l" : ""
+              } ${index > 0 ? "xl:border-l" : ""}`}
+            >
+              <p className="text-sm font-semibold text-[#6f91ff]">{category.title}</p>
+              <ul className="mt-6 space-y-3">
+                {category.skills.map((skill) => (
+                  <li
+                    key={skill}
+                    className="text-[15px] leading-6 text-white/75"
+                  >
+                    {skill}
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );
