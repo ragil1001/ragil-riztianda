@@ -14,11 +14,11 @@ const Skills = () => {
           </p>
         </div>
 
-        <div className="mt-14 grid border-t border-black/12 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-14 grid border-t border-black/10 md:grid-cols-2 xl:grid-cols-4">
           {SkillsInfo.map((category, index) => (
             <div
               key={category.title}
-              className={`border-b border-black/12 py-8 md:px-7 xl:min-h-[320px] xl:border-b-0 ${
+              className={`border-b border-black/10 py-8 md:px-7 xl:min-h-[320px] xl:border-b-0 ${
                 index % 2 === 1 ? "md:border-l" : ""
               } ${index > 0 ? "xl:border-l" : ""}`}
             >
