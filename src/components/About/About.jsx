@@ -1,85 +1,70 @@
 import React from "react";
-import ReactTypingEffect from "react-typing-effect";
-import Tilt from "react-parallax-tilt";
 import profileImage from "../../assets/ragil.jpg";
 
 const About = () => {
   return (
     <section
       id="about"
-      className="py-4 px-[7vw] md:px-[7vw] lg:px-[20vw] font-sans mt-16 md:mt-24 lg:mt-32"
+      className="px-[7vw] pb-24 pt-16 font-sans md:pt-24 lg:px-[14vw] lg:pb-32 lg:pt-32"
     >
-      <div className="flex flex-col-reverse md:flex-row justify-between items-center">
-        {/* Left Side */}
-        <div className="md:w-1/2 text-center md:text-left mt-8 md:mt-0 md:pr-3">
-          {/* Greeting */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2 leading-tight">
-            Hi, I am
-          </h1>
-          {/* Name */}
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4 leading-tight">
-            Ragil Riztianda
-          </h2>
-          {/* Skills Heading with Typing Effect */}
-          <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-4 text-[#8245ec] leading-tight">
-            <span className="text-white">I am a </span>
-            <ReactTypingEffect
-              text={[
-                "Fullstack Developer",
-                "App Developer",
-                "UI/UX Designer",
-                "Coder",
-              ]}
-              speed={100}
-              eraseSpeed={50}
-              typingDelay={500}
-              eraseDelay={2000}
-              cursorRenderer={(cursor) => (
-                <span className="text-[#8245ec]">{cursor}</span>
-              )}
-            />
-          </h3>
-          {/* About Me Paragraph */}
-          <p className="text-base sm:text-lg md:text-lg text-gray-400 mb-16 mt-12 leading-relaxed">
-            I'am an Informatics student at Universitas Atma Jaya
-            Yogyakarta—enthusiastic, proactive, and deeply passionate about both
-            Full Stack Web and Mobile App Development. I thrive on learning
-            emerging technologies and tackling challenges independently through
-            analytical and critical thinking. With a strong commitment to every
-            project I take on, my focus lies in crafting effective and
-            meaningful digital solutions across web and mobile platforms.
+      <div className="grid items-center gap-14 lg:grid-cols-[1.2fr_0.8fr]">
+        <div>
+          <p className="mb-5 text-sm font-semibold uppercase tracking-[0.22em] text-purple-300">
+            Software Engineer · Full-Stack Developer
           </p>
-          {/* Resume Button */}
-          <a
-            href="https://drive.google.com/file/d/1AGZIgqB495STuW1qlZ5wANvXEAZNPSAo/view?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block text-white py-3 px-8 rounded-full mt-5 text-lg font-bold transition duration-300 transform hover:scale-105"
-            style={{
-              background: "linear-gradient(90deg, #8245ec, #a855f7)",
-              boxShadow: "0 0 2px #8245ec, 0 0 2px #8245ec, 0 0 40px #8245ec",
-            }}
-          >
-            DOWNLOAD CV
-          </a>
+          <h1 className="max-w-4xl text-4xl font-bold leading-[1.08] text-white sm:text-5xl lg:text-7xl">
+            I build web, backend, and mobile systems that solve operational problems.
+          </h1>
+          <p className="mt-7 max-w-3xl text-base leading-8 text-gray-300 sm:text-lg">
+            I am an Informatics graduate from Universitas Atma Jaya Yogyakarta with hands-on experience developing end-to-end applications across Laravel, Next.js, React, and Flutter. My work spans workforce and attendance operations, multi-role marketplace flows, community information systems, and mobile booking experiences.
+          </p>
+          <p className="mt-4 max-w-3xl text-base leading-8 text-gray-400 sm:text-lg">
+            I enjoy turning real workflows into maintainable software: defining data and API flows, building responsive interfaces, integrating mobile capabilities, and debugging systems across layers. I also bring teaching experience from assisting Data Structures and Object-Oriented Programming classes.
+          </p>
+
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <button
+              type="button"
+              onClick={() => document.getElementById("work")?.scrollIntoView({ behavior: "smooth" })}
+              className="rounded-xl bg-purple-600 px-6 py-3 text-center font-semibold text-white transition hover:bg-purple-500"
+            >
+              View selected work
+            </button>
+            <a
+              href="https://www.linkedin.com/in/ragilriztianda"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-xl border border-white/15 px-6 py-3 text-center font-semibold text-white transition hover:bg-white/10"
+            >
+              LinkedIn
+            </a>
+            <a
+              href="mailto:ragilriztianda2@gmail.com"
+              className="rounded-xl border border-white/15 px-6 py-3 text-center font-semibold text-white transition hover:bg-white/10"
+            >
+              Email me
+            </a>
+          </div>
         </div>
-        {/* Right Side */}
-        <div className="md:w-1/2 flex justify-center md:justify-end">
-          <Tilt
-            className="w-48 h-48 sm:w-64 sm:h-64 md:w-[30rem] md:h-[30rem] border-4 border-purple-700 rounded-full"
-            tiltMaxAngleX={20}
-            tiltMaxAngleY={20}
-            perspective={1000}
-            scale={1.05}
-            transitionSpeed={1000}
-            gyroscope={true}
-          >
+
+        <div className="mx-auto w-full max-w-sm lg:max-w-md">
+          <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 p-3 shadow-2xl shadow-purple-950/30">
             <img
               src={profileImage}
               alt="Ragil Riztianda"
-              className="w-full h-full rounded-full object-cover drop-shadow-[0_10px_20px_rgba(130,69,236,0.5)]"
+              className="aspect-[4/5] w-full rounded-[1.5rem] object-cover"
             />
-          </Tilt>
+          </div>
+          <div className="mt-5 grid grid-cols-2 gap-3 text-sm">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+              <p className="text-gray-500">Based in</p>
+              <p className="mt-1 font-semibold text-white">Indonesia</p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+              <p className="text-gray-500">Open to</p>
+              <p className="mt-1 font-semibold text-white">Software roles</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
