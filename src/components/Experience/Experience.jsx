@@ -1,94 +1,67 @@
 import React from "react";
-import { experiences } from "../../constants"; // Import your data
+import { experiences } from "../../constants";
 
 const Experience = () => {
   return (
     <section
       id="experience"
-      className="py-24 pb-24 px-[12vw] md:px-[7vw] lg:px-[16vw] font-sans bg-skills-gradient clip-path-custom-2"
+      className="px-[7vw] py-24 font-sans lg:px-[14vw]"
     >
-      {/* Section Title */}
-      <div className="text-center mb-16">
-        <h2 className="text-4xl font-bold text-white">EXPERIENCE</h2>
-        <div className="w-32 h-1 bg-purple-500 mx-auto mt-4"></div>
-        <p className="text-gray-400 mt-4 text-lg font-semibold">
-          A collection of my work experience and the roles I have taken in
-          various organizations
+      <div className="mb-12 max-w-3xl">
+        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-purple-300">
+          Experience
+        </p>
+        <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
+          Building software and helping others learn it.
+        </h2>
+        <p className="mt-4 text-base leading-7 text-gray-400 sm:text-lg">
+          My experience combines end-to-end product development with teaching and mentoring. The common thread is translating requirements into something people can use and understand.
         </p>
       </div>
 
-      {/* Experience Timeline */}
-      <div className="relative">
-        {/* Vertical line */}
-        <div className="absolute sm:left-1/2 left-0 transform -translate-x-1/2 sm:-translate-x-0 w-1 bg-white h-full"></div>
-
-        {/* Experience Entries */}
-        {experiences.map((experience, index) => (
-          <div
+      <div className="space-y-5">
+        {experiences.map((experience) => (
+          <article
             key={experience.id}
-            className={`flex flex-col sm:flex-row items-center mb-16 ${
-              index % 2 === 0 ? "sm:justify-end" : "sm:justify-start"
-            }`}
+            className="grid gap-5 rounded-2xl border border-white/10 bg-white/[0.035] p-6 md:grid-cols-[180px_1fr] md:p-8"
           >
-            {/* Timeline Circle */}
-            {/* <div className="absolute sm:left-1/2 left-0 transform -translate-x-1/2 bg-gray-400 border-4 border-[#8245ec] w-12 h-12 sm:w-16 sm:h-16 rounded-full flex justify-center items-center z-10">
-              <img
-                src={experience.img}
-                alt={experience.company}
-                className="w-full h-full object-cover rounded-full"
-              />
-            </div> */}
+            <div>
+              <p className="text-sm font-semibold text-purple-300">{experience.date}</p>
+              <p className="mt-2 text-sm text-gray-500">{experience.location}</p>
+            </div>
 
-            {/* Content Section */}
-            <div
-              className={`w-full sm:max-w-md p-4 sm:p-8 rounded-2xl border border-white bg-gray-900 backdrop-blur-md shadow-[0_0_20px_1px_rgba(130,69,236,0.3)] ${
-                index % 2 === 0 ? "sm:ml-0" : "sm:mr-0"
-              } sm:ml-44 sm:mr-44 ml-8 transform transition-transform duration-300 hover:scale-105`}
-            >
-              {/* Flex container for image and text */}
-              <div className="flex items-center space-x-7">
-                {/* Company Logo/Image */}
-                <div className="w-20 h-20 rounded-full bg-gray-400 flex justify-center items-center overflow-hidden flex-shrink-0">
-                  <img
-                    src={experience.img}
-                    alt={experience.company}
-                    className="w-full h-full object-cover rounded-full"
-                  />
-                </div>
+            <div>
+              <h3 className="text-xl font-bold text-white sm:text-2xl">
+                {experience.role}
+              </h3>
+              <p className="mt-1 font-medium text-gray-300">{experience.company}</p>
+              <p className="mt-4 max-w-4xl leading-7 text-gray-400">
+                {experience.desc}
+              </p>
 
-                {/* Role, Company Name, and Date */}
-                <div className="flex flex-col justify-between">
-                  <div>
-                    <h3 className="text-xl sm:text-2xl font-semibold text-white">
-                      {experience.role}
-                    </h3>
-                    <h4 className="text-md sm:text-sm text-gray-300">
-                      {experience.company}
-                    </h4>
-                  </div>
-                  {/* Date at the bottom */}
-                  <p className="text-sm text-gray-500 mt-2">
-                    {experience.date}
-                  </p>
-                </div>
-              </div>
-
-              <p className="mt-4 text-gray-400">{experience.desc}</p>
-              <div className="mt-4">
-                <h5 className="font-medium text-white">Skills:</h5>
-                <ul className="flex flex-wrap mt-2">
-                  {experience.skills.map((skill, index) => (
-                    <li
-                      key={index}
-                      className="bg-[#8245ec] text-gray-300 px-4 py-1 text-xs sm:text-sm rounded-lg mr-2 mb-2 border border-gray-400"
-                    >
-                      {skill}
+              {experience.highlights?.length > 0 && (
+                <ul className="mt-5 grid gap-3 text-sm leading-6 text-gray-300 md:grid-cols-2">
+                  {experience.highlights.map((highlight) => (
+                    <li key={highlight} className="flex gap-3">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-purple-400" />
+                      <span>{highlight}</span>
                     </li>
                   ))}
                 </ul>
+              )}
+
+              <div className="mt-5 flex flex-wrap gap-2">
+                {experience.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="rounded-full border border-white/10 bg-[#151326] px-3 py-1 text-xs font-semibold text-gray-300"
+                  >
+                    {skill}
+                  </span>
+                ))}
               </div>
             </div>
-          </div>
+          </article>
         ))}
       </div>
     </section>
