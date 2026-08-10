@@ -108,7 +108,7 @@ const Work = () => {
         </div>
 
         <div>
-          {portfolioProjects.map((project, index) => (
+          {portfolioProjects.map((project) => (
             <motion.article
               key={project.id}
               initial={reduceMotion ? false : { opacity: 0, y: 34 }}
