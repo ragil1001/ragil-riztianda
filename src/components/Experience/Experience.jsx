@@ -1,10 +1,7 @@
 import React from "react";
-import { motion, useReducedMotion } from "motion/react";
 import { experiences } from "../../constants";
 
 const Experience = () => {
-  const reduceMotion = useReducedMotion();
-
   return (
     <section id="experience" className="bg-[#111318] text-white">
       <div className="mx-auto max-w-[1440px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
@@ -23,12 +20,8 @@ const Experience = () => {
 
           <div className="border-t border-white/15 lg:col-span-8">
             {experiences.map((experience, index) => (
-              <motion.article
+              <article
                 key={experience.id}
-                initial={reduceMotion ? false : { opacity: 0, y: 26 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.15 }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 className="grid gap-6 border-b border-white/15 py-8 md:grid-cols-[56px_170px_1fr] md:gap-6 md:py-10"
               >
                 <span className="text-xs font-semibold tabular-nums text-white/30">{String(index + 1).padStart(2, "0")}</span>
@@ -57,7 +50,7 @@ const Experience = () => {
 
                   <p className="mt-6 text-xs leading-6 text-white/35">{experience.skills.join(" / ")}</p>
                 </div>
-              </motion.article>
+              </article>
             ))}
           </div>
         </div>
