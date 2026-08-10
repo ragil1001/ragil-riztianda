@@ -51,6 +51,29 @@ jobs:
 
           const browser = await chromium.launch({ headless: true });
 
+          async function revealWholePage(page) {
+            const height = await page.evaluate(() => document.documentElement.scrollHeight);
+            const step = Math.max(500, Math.floor((await page.viewportSize()).height * 0.75));
+            for (let y = 0; y < height; y += step) {
+              await page.evaluate((nextY) => window.scrollTo(0, nextY), y);
+              await page.waitForTimeout(90);
+            }
+            await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+            await page.waitForTimeout(250);
+            await page.evaluate(() => window.scrollTo(0, 0));
+            await page.waitForTimeout(250);
+          }
+
+          async function scrollSectionToTop(page, selector) {
+            await page.evaluate((target) => {
+              const element = document.querySelector(target);
+              if (!element) throw new Error(`Missing section ${target}`);
+              const top = element.getBoundingClientRect().top + window.scrollY - 88;
+              window.scrollTo(0, Math.max(0, top));
+            }, selector);
+            await page.waitForTimeout(300);
+          }
+
           async function capture(name, viewport) {
             console.log(`Capturing ${name} at ${viewport.width}x${viewport.height}`);
             const page = await browser.newPage({ viewport });
@@ -59,10 +82,11 @@ jobs:
 
             await page.goto('http://127.0.0.1:4173', { waitUntil: 'networkidle' });
             await page.locator('#about').waitFor({ state: 'visible' });
+            await revealWholePage(page);
+
             await page.screenshot({ path: `visual-qa/${name}-full.png`, fullPage: true });
 
-            await page.locator('#work').scrollIntoViewIfNeeded();
-            await page.waitForTimeout(300);
+            await scrollSectionToTop(page, '#work');
             await page.screenshot({ path: `visual-qa/${name}-work.png`, fullPage: false });
 
             const button = page.getByRole('button', { name: 'Read case study' }).first();
