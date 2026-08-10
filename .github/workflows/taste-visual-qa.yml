@@ -1,0 +1,77 @@
+name: Taste visual QA
+
+on:
+  push:
+    branches:
+      - chatgpt/taste-visual-qa
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install app dependencies
+        run: npm ci
+
+      - name: Install Playwright for visual QA
+        run: |
+          npm install --no-save --package-lock=false playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Build production bundle
+        run: npm run build
+
+      - name: Start production preview
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4173 > /tmp/vite-preview.log 2>&1 &
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:4173 >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/vite-preview.log
+          exit 1
+
+      - name: Capture desktop and mobile
+        run: |
+          mkdir -p visual-qa
+          cat > /tmp/capture.mjs <<'JS'
+          import { chromium } from 'playwright';
+          const browser = await chromium.launch({ headless: true });
+
+          async function capture(name, viewport) {
+            const page = await browser.newPage({ viewportSize: viewport, deviceScaleFactor: 1 });
+            await page.goto('http://127.0.0.1:4173', { waitUntil: 'networkidle' });
+            await page.screenshot({ path: `visual-qa/${name}-full.png`, fullPage: true });
+            await page.locator('#work').scrollIntoViewIfNeeded();
+            await page.screenshot({ path: `visual-qa/${name}-work.png`, fullPage: false });
+            const button = page.getByRole('button', { name: 'Read case study' }).first();
+            await button.click();
+            await page.waitForTimeout(450);
+            await page.screenshot({ path: `visual-qa/${name}-case-study.png`, fullPage: false });
+            await page.close();
+          }
+
+          await capture('desktop', { width: 1440, height: 1000 });
+          await capture('mobile', { width: 390, height: 844 });
+          await browser.close();
+          JS
+          node /tmp/capture.mjs
+
+      - name: Upload visual QA screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: taste-visual-qa
+          path: visual-qa/*.png
+          if-no-files-found: error
