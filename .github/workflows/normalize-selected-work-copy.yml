@@ -1,0 +1,41 @@
+name: Normalize selected work copy
+
+on:
+  push:
+    branches:
+      - chatgpt/taste-skill-overhaul
+    paths:
+      - .github/workflows/normalize-selected-work-copy.yml
+
+permissions:
+  contents: write
+
+jobs:
+  update-copy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout overhaul branch
+        uses: actions/checkout@v4
+        with:
+          ref: chatgpt/taste-skill-overhaul
+
+      - name: Replace meta copy
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('src/components/Work/Work.jsx')
+          source = path.read_text(encoding='utf-8')
+          old = 'Products, not repository inventory.'
+          new = 'Four systems built around real workflows.'
+          if old not in source:
+              raise SystemExit(f'Expected copy not found: {old}')
+          path.write_text(source.replace(old, new, 1), encoding='utf-8')
+          PY
+
+      - name: Commit copy refinement
+        run: |
+          git config user.name "Ragil Riztianda"
+          git config user.email "220711672@students.uajy.ac.id"
+          git add src/components/Work/Work.jsx
+          git commit -m "copy: refine selected work heading"
+          git push origin HEAD:chatgpt/taste-skill-overhaul
