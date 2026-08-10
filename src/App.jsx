@@ -10,7 +10,7 @@ import Footer from "./components/Footer/Footer";
 
 const App = () => {
   return (
-    <div className="min-h-screen overflow-x-clip bg-[#f4f5f7] text-[#101216] selection:bg-[#2055ff] selection:text-white">
+    <div className="min-h-screen overflow-x-clip bg-[#f7f8fa] text-[#111318] selection:bg-[#1557ff] selection:text-white">
       <Navbar />
       <main>
         <About />
