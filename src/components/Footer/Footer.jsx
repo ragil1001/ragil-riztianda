@@ -2,10 +2,17 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#edf0f4]">
-      <div className="mx-auto flex max-w-[1400px] flex-col gap-3 border-t border-black/10 px-5 py-7 text-sm text-[#737982] sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-12">
-        <p>© 2026 Ragil Riztianda</p>
-        <p>Software Engineer / Full-Stack Developer</p>
+    <footer className="bg-[#111318] text-white">
+      <div className="mx-auto grid max-w-[1440px] gap-4 px-5 py-7 text-xs sm:grid-cols-3 sm:items-center sm:px-8 lg:px-12">
+        <p className="font-semibold text-white/60">© 2026 Ragil Riztianda</p>
+        <p className="font-semibold text-white/40 sm:text-center">Software Engineer · Full-Stack Developer</p>
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="w-fit font-bold text-white/65 transition-colors hover:text-white sm:justify-self-end"
+        >
+          Back to top ↑
+        </button>
       </div>
     </footer>
   );
