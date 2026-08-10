@@ -99,7 +99,7 @@ const Work = () => {
           <div className="lg:col-span-8">
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#1557ff]">Selected work · 01—04</p>
             <h2 className="mt-5 max-w-[840px] text-4xl font-black leading-[0.98] tracking-[-0.055em] text-[#111318] sm:text-5xl lg:text-6xl">
-              Products, not repository inventory.
+              Four systems built around real workflows.
             </h2>
           </div>
           <p className="max-w-[430px] text-base leading-7 text-[#68707a] lg:col-span-4 lg:justify-self-end">
