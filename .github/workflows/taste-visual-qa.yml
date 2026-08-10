@@ -46,18 +46,29 @@ jobs:
       - name: Capture desktop and mobile
         run: |
           mkdir -p visual-qa
-          cat > /tmp/capture.mjs <<'JS'
+          cat > capture.mjs <<'JS'
           import { chromium } from 'playwright';
+
           const browser = await chromium.launch({ headless: true });
 
           async function capture(name, viewport) {
-            const page = await browser.newPage({ viewportSize: viewport, deviceScaleFactor: 1 });
+            console.log(`Capturing ${name} at ${viewport.width}x${viewport.height}`);
+            const page = await browser.newPage({ viewport });
+            page.on('console', (message) => console.log(`[browser:${name}] ${message.type()}: ${message.text()}`));
+            page.on('pageerror', (error) => console.error(`[pageerror:${name}]`, error));
+
             await page.goto('http://127.0.0.1:4173', { waitUntil: 'networkidle' });
+            await page.locator('#about').waitFor({ state: 'visible' });
             await page.screenshot({ path: `visual-qa/${name}-full.png`, fullPage: true });
+
             await page.locator('#work').scrollIntoViewIfNeeded();
+            await page.waitForTimeout(300);
             await page.screenshot({ path: `visual-qa/${name}-work.png`, fullPage: false });
+
             const button = page.getByRole('button', { name: 'Read case study' }).first();
+            await button.scrollIntoViewIfNeeded();
             await button.click();
+            await page.getByRole('dialog').waitFor({ state: 'visible' });
             await page.waitForTimeout(450);
             await page.screenshot({ path: `visual-qa/${name}-case-study.png`, fullPage: false });
             await page.close();
@@ -67,9 +78,11 @@ jobs:
           await capture('mobile', { width: 390, height: 844 });
           await browser.close();
           JS
-          node /tmp/capture.mjs
+          node capture.mjs
+          ls -lh visual-qa
 
       - name: Upload visual QA screenshots
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: taste-visual-qa
