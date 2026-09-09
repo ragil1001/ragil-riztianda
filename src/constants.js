@@ -1,23 +1,28 @@
 export const SkillsInfo = [
   {
-    title: "Web frontend",
-    description: "Responsive administration tools and product interfaces.",
-    skills: ["JavaScript", "React", "Next.js", "Tailwind CSS", "Responsive UI"],
+    title: "Web & interface",
+    description: "Responsive administration tools, public websites, and product interfaces.",
+    skills: ["JavaScript", "React", "Next.js", "Tailwind CSS", "Bootstrap", "HTML", "CSS", "Responsive UI"],
   },
   {
-    title: "Backend & APIs",
-    description: "Application services, authentication, and integration work.",
-    skills: ["PHP", "Laravel", "REST APIs", "Authentication & Authorization", "API Integration"],
+    title: "Backend & integration",
+    description: "Application services, authentication, APIs, and system-to-system flows.",
+    skills: ["PHP", "Laravel", "Node.js", "REST APIs", "Authentication & Authorization", "API Integration", "Postman"],
   },
   {
-    title: "Mobile",
-    description: "Flutter applications with device and field capabilities.",
-    skills: ["Dart", "Flutter", "Geolocation", "Camera", "Firebase Messaging", "Secure Storage"],
+    title: "Mobile & field workflows",
+    description: "Mobile applications that interact with users, devices, and operational evidence.",
+    skills: ["Dart", "Flutter", "React Native", "Expo React", "Geolocation", "Camera", "Firebase", "Secure Storage"],
   },
   {
-    title: "Data & engineering",
-    description: "Databases, infrastructure services, and programming foundations.",
-    skills: ["PostgreSQL", "MySQL", "Firebase", "Redis", "Git", "Postman", "Java", "C"],
+    title: "Data & platform",
+    description: "Relational data, caching, object storage, and services behind application workflows.",
+    skills: ["PostgreSQL", "MySQL", "Redis", "Firebase", "Cloudflare R2", "MinIO", "Database Design", "Object Storage"],
+  },
+  {
+    title: "Engineering foundations",
+    description: "Programming fundamentals, delivery tools, testing, and system-oriented problem solving.",
+    skills: ["Git", "GitHub", "Docker", "Ubuntu", "Software Testing", "Java", "C", "OOP", "Data Structures", "Algorithms"],
   },
 ];
 
@@ -25,14 +30,14 @@ export const experiences = [
   {
     id: 0,
     type: "Internship",
-    role: "Developer",
+    role: "Software Developer",
     company: "PT Qiprah Multi Service",
-    location: "Indonesia",
+    location: "Semarang, Central Java, Indonesia",
     date: "Aug 2025 - Feb 2026",
-    desc: "Developed an HRIS for outsourced workforce operations across employee mobile, web administration, backend services, and the database layer.",
+    desc: "Developed an HRIS and attendance system for outsourced workforce operations across employee mobile, web administration, backend services, and the database layer.",
     highlights: [
-      "Built attendance workflows with geolocation and camera evidence, alongside schedules, leave, overtime, attendance history, and notifications.",
-      "Worked end to end across Flutter, Next.js/React, Laravel APIs, PostgreSQL, Firebase services, Redis, reporting, integration, debugging, and deployment-related work.",
+      "Built attendance workflows with geolocation and camera evidence, alongside schedules, leave, overtime, attendance history, notifications, administration, and reporting.",
+      "Worked end to end across Flutter, Next.js/React, Laravel APIs, PostgreSQL, Firebase, Redis, integration, debugging, and deployment-related work.",
       "Implemented mobile safeguards for attendance-sensitive flows, including secure storage, device checks, mock-location detection, and anti-tampering measures.",
     ],
     skills: ["Flutter", "Next.js", "React", "Laravel", "PostgreSQL", "Firebase", "Redis"],
@@ -54,16 +59,16 @@ export const experiences = [
   {
     id: 2,
     type: "Teaching",
-    role: "Teaching Assistant, Data Structures",
+    role: "Teaching Assistant, Information & Data Structures",
     company: "Department of Informatics, Universitas Atma Jaya Yogyakarta",
     location: "Yogyakarta, Indonesia",
     date: "Aug 2024 - Jan 2025",
-    desc: "Assisted practical Data Structures classes in C for more than 200 students, from foundational structures through stacks and binary trees.",
+    desc: "Assisted practical Information and Data Structures classes in C for more than 200 students, from algorithms and pointers through stacks and binary trees.",
     highlights: [
-      "Helped students reason about algorithms, pointers, memory, and implementation trade-offs instead of only reproducing code.",
+      "Helped students reason about algorithms, pointers, memory management, and implementation trade-offs instead of only reproducing code.",
       "Supported laboratory sessions, debugging, practical exercises, and evaluation throughout the semester.",
     ],
-    skills: ["C", "Data Structures", "Algorithms", "Debugging", "Teaching"],
+    skills: ["C", "Data Structures", "Algorithms", "Pointers", "Debugging", "Teaching"],
   },
   {
     id: 3,
@@ -86,8 +91,8 @@ export const education = [
     id: 0,
     school: "Universitas Atma Jaya Yogyakarta",
     date: "Aug 2022 - Aug 2026",
-    grade: "3.93 / 4.00",
-    desc: "Bachelor of Informatics with project work across software engineering, web and mobile development, databases, data structures, object-oriented programming, and application integration.",
+    grade: "3.93 / 4.00 · Cum Laude",
+    desc: "Bachelor of Informatics with study and project work across software engineering, web and mobile development, databases, system integration, operating systems, computer networks, security, data structures, algorithms, and object-oriented programming.",
     degree: "Bachelor of Informatics (S.Kom.)",
   },
 ];

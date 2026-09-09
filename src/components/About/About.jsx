@@ -10,10 +10,10 @@ const About = () => {
     <section id="about" className="bg-[#f7f8fa] pt-[72px]">
       <div className="mx-auto max-w-[1440px] px-5 pb-24 pt-12 sm:px-8 sm:pt-16 lg:px-12 lg:pb-32 lg:pt-20">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-black/10 pb-5 text-[12px] font-semibold uppercase tracking-[0.12em] text-[#7a818b]">
-          <span>Software Engineer · Full-Stack Developer</span>
+          <span>Software Engineering · Full-Stack · IT Systems</span>
           <span className="flex items-center gap-2 text-[#111318]">
             <span className="h-2 w-2 bg-[#1557ff]" />
-            Open to software roles
+            Open to software & technology roles
           </span>
         </div>
 
@@ -24,16 +24,16 @@ const About = () => {
             transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
             className="lg:col-span-8"
           >
-            <h1 className="max-w-[920px] text-[clamp(3.1rem,6.4vw,6.6rem)] font-black leading-[0.94] tracking-[-0.068em] text-[#111318]">
-              I build web, backend, and mobile systems end to end.
+            <h1 className="max-w-[980px] text-[clamp(3.1rem,6.4vw,6.6rem)] font-black leading-[0.94] tracking-[-0.068em] text-[#111318]">
+              I turn operational workflows into working web, mobile, backend, and data-backed systems.
             </h1>
 
-            <div className="mt-9 grid gap-7 border-t border-black/10 pt-7 sm:grid-cols-2 sm:gap-10 lg:max-w-[900px]">
+            <div className="mt-9 grid gap-7 border-t border-black/10 pt-7 sm:grid-cols-2 sm:gap-10 lg:max-w-[920px]">
               <p className="text-[17px] leading-8 text-[#4f5661]">
-                Recent work includes an HRIS for outsourced workforce operations at PT Qiprah Multi Service, developed across Flutter, Next.js/React, Laravel, PostgreSQL, Firebase, and Redis.
+                My most recent delivery was an HRIS for outsourced workforce operations at PT Qiprah Multi Service, developed across Flutter, Next.js/React, Laravel, PostgreSQL, Firebase, and Redis.
               </p>
               <p className="text-[17px] leading-8 text-[#6d747e]">
-                My project work also covers multi-role marketplaces, community information systems, cinema booking flows, and teaching programming fundamentals in Java and C.
+                I also build multi-role applications and public-information systems, work with databases and APIs, debug across application layers, and have taught Java, C, OOP, algorithms, and data structures to hundreds of students.
               </p>
             </div>
 
@@ -73,26 +73,29 @@ const About = () => {
           >
             <div className="grid gap-5 sm:grid-cols-[220px_1fr] lg:grid-cols-1">
               <div className="overflow-hidden border border-black/10 bg-[#e7e9ed]">
-                <img
-                  src={profileImage}
-                  alt="Ragil Riztianda"
-                  className="aspect-[4/5] w-full object-cover object-center"
-                />
+                <img src={profileImage} alt="Ragil Riztianda" className="aspect-[4/5] w-full object-cover object-center" />
               </div>
-
               <div className="border-t border-black/10 pt-5">
                 <dl className="space-y-4 text-sm">
                   <div className="grid grid-cols-[92px_1fr] gap-4">
                     <dt className="text-[#8a9098]">Based in</dt>
-                    <dd className="font-semibold text-[#111318]">Indonesia</dd>
+                    <dd className="font-semibold text-[#111318]">Singkawang, Indonesia</dd>
                   </div>
                   <div className="grid grid-cols-[92px_1fr] gap-4">
-                    <dt className="text-[#8a9098]">Graduate</dt>
-                    <dd className="font-semibold text-[#111318]">Informatics · Aug 2026</dd>
+                    <dt className="text-[#8a9098]">Degree</dt>
+                    <dd className="font-semibold text-[#111318]">Informatics (S.Kom.) · 2026</dd>
+                  </div>
+                  <div className="grid grid-cols-[92px_1fr] gap-4">
+                    <dt className="text-[#8a9098]">Academic</dt>
+                    <dd className="font-semibold text-[#111318]">GPA 3.93 / 4.00 · Cum Laude</dd>
+                  </div>
+                  <div className="grid grid-cols-[92px_1fr] gap-4">
+                    <dt className="text-[#8a9098]">Credential</dt>
+                    <dd className="font-semibold leading-6 text-[#111318]">EC-Council CSCU</dd>
                   </div>
                   <div className="grid grid-cols-[92px_1fr] gap-4">
                     <dt className="text-[#8a9098]">Focus</dt>
-                    <dd className="font-semibold leading-6 text-[#111318]">Software engineering, full-stack web, mobile</dd>
+                    <dd className="font-semibold leading-6 text-[#111318]">Software engineering, databases, system integration, mobile & web</dd>
                   </div>
                 </dl>
               </div>
